@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>London Commuter Finder — Adam & Simon</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<style>
+  :root {
+    --bg: #f2ede6; --sidebar-bg: #16213e; --sidebar-hover: #1e2f58; --sidebar-selected: #0f3460;
+    --surface: #ffffff; --border: #e5dfd7; --text: #1a1410; --text-muted: #7a726a; --text-light: #a89f97;
+    --green: #3a7d44; --green-light: #d4edda; --green-text: #1d4624;
+    --amber: #b57a04; --amber-light: #fef3cd; --amber-text: #6b4800;
+    --red: #9b2335; --red-light: #fce4e7; --red-text: #5c0f1a;
+    --slate: #6c7a96; --slate-light: #e8eaf2;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.08); --shadow: 0 2px 8px rgba(0,0,0,0.1); --shadow-md: 0 4px 20px rgba(0,0,0,0.14);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); height: 100vh; display: flex; flex-direction: column; overflow: hidden; -webkit-font-smoothing: antialiased; }
+
+  /* HEADER */
+  .header { background: var(--sidebar-bg); padding: 0 20px; height: 56px; display: flex; align-items: center; gap: 18px; flex-shrink: 0; box-shadow: 0 2px 12px rgba(0,0,0,0.3); z-index: 200; position: relative; }
+  .logo { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+  .logo-icon { width: 28px; height: 28px; background: var(--green); border-radius: 6px; display: flex; align-items: center; justify-content: center; font-size: 14px; }
+  .logo-text { font-family: 'Fraunces', serif; font-size: 15px; color: #f2ede6; }
+  .logo-text span { color: #7eb87a; }
+  .hdiv { width: 1px; height: 24px; background: rgba(255,255,255,0.12); flex-shrink: 0; }
+  .filter-group { display: flex; align-items: center; gap: 10px; }
+  .filter-label { font-size: 11px; color: rgba(255,255,255,0.45); text-transform: uppercase; letter-spacing: 0.8px; white-space: nowrap; }
+  .salary-wrapper { display: flex; align-items: center; gap: 8px; }
+  .salary-amount { font-size: 14px; font-weight: 600; color: #7eb87a; min-width: 55px; }
+  .salary-sub { font-size: 11px; color: rgba(255,255,255,0.3); white-space: nowrap; }
+  input[type=range] { width: 110px; height: 4px; accent-color: #7eb87a; cursor: pointer; }
+  .deposit-input { background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 4px 8px; color: white; font-size: 13px; width: 76px; font-family: 'DM Sans', sans-serif; }
+  .deposit-input:focus { outline: none; border-color: #7eb87a; }
+  .terminal-group { display: flex; gap: 3px; }
+  .term-btn { background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.12); color: rgba(255,255,255,0.5); padding: 4px 9px; border-radius: 20px; font-size: 11px; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; white-space: nowrap; }
+  .term-btn:hover { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.8); }
+  .term-btn.active { background: #7eb87a; border-color: #7eb87a; color: #fff; font-weight: 600; }
+  .header-spacer { flex: 1; }
+  .add-btn { background: rgba(126,184,122,0.15); border: 1px solid rgba(126,184,122,0.4); color: #7eb87a; padding: 6px 14px; border-radius: 20px; font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; font-weight: 500; transition: all 0.15s; white-space: nowrap; }
+  .add-btn:hover { background: rgba(126,184,122,0.25); }
+
+  /* LAYOUT */
+  .app-body { display: flex; flex: 1; overflow: hidden; }
+
+  /* SIDEBAR */
+  .sidebar { width: 272px; background: var(--sidebar-bg); display: flex; flex-direction: column; overflow: hidden; flex-shrink: 0; border-right: 1px solid rgba(255,255,255,0.06); }
+  .sidebar-section-label { padding: 12px 16px 5px; font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: rgba(255,255,255,0.25); font-weight: 500; }
+  .location-list { flex: 1; overflow-y: auto; padding: 4px 8px 8px; scrollbar-width: thin; scrollbar-color: rgba(255,255,255,0.1) transparent; }
+  .location-list::-webkit-scrollbar { width: 4px; }
+  .location-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 2px; }
+
+  .loc-card { padding: 10px 12px; border-radius: 8px; cursor: pointer; margin-bottom: 2px; transition: all 0.15s; border: 1px solid transparent; position: relative; }
+  .loc-card:hover { background: var(--sidebar-hover); }
+  .loc-card.selected { background: var(--sidebar-selected); border-color: rgba(126,184,122,0.4); }
+  .loc-card.crossed { opacity: 0.35; }
+  .loc-card.crossed .loc-name { text-decoration: line-through; }
+  .loc-card-top { display: flex; align-items: center; gap: 7px; margin-bottom: 2px; }
+  .status-pip { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; }
+  .pip-green { background: #7eb87a; } .pip-amber { background: #e8b84b; } .pip-red { background: #c0504d; } .pip-slate { background: #6c7a96; } .pip-dimmed { background: #3a4460; }
+  .loc-name { font-size: 13px; font-weight: 600; color: #e8e3db; flex: 1; line-height: 1.2; }
+
+  .score-badge {
+    font-size: 11px; font-weight: 700; padding: 2px 7px; border-radius: 10px;
+    flex-shrink: 0; letter-spacing: 0.3px;
+  }
+  .score-high { background: rgba(126,184,122,0.2); color: #7eb87a; }
+  .score-mid  { background: rgba(232,184,75,0.2); color: #e8b84b; }
+  .score-low  { background: rgba(192,80,77,0.2); color: #c0504d; }
+  .score-dim  { background: rgba(100,100,120,0.15); color: rgba(255,255,255,0.25); }
+
+  .loc-county { font-size: 10px; color: rgba(255,255,255,0.28); margin-bottom: 4px; }
+  .loc-stats-row { display: flex; gap: 10px; }
+  .loc-stat { font-size: 11px; color: rgba(255,255,255,0.38); }
+  .loc-stat strong { color: rgba(255,255,255,0.6); font-weight: 500; }
+  .card-dismiss { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); width: 20px; height: 20px; border: none; border-radius: 4px; cursor: pointer; font-size: 11px; display: none; align-items: center; justify-content: center; }
+  .loc-card:hover .card-dismiss { display: flex; }
+  .dismiss-cross { background: rgba(192,80,77,0.2); color: #c0504d; }
+  .dismiss-restore { background: rgba(126,184,122,0.2); color: #7eb87a; }
+  .sidebar-add { margin: 4px 8px 8px; }
+  .sidebar-add-btn { width: 100%; padding: 8px; background: transparent; border: 1px dashed rgba(255,255,255,0.12); border-radius: 8px; color: rgba(255,255,255,0.3); font-size: 12px; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all 0.15s; }
+  .sidebar-add-btn:hover { border-color: rgba(126,184,122,0.4); color: #7eb87a; }
+
+  /* MAIN */
+  .main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+  .loc-header { padding: 14px 24px 11px; background: var(--surface); border-bottom: 1px solid var(--border); display: flex; align-items: flex-start; gap: 16px; flex-shrink: 0; }
+  .loc-title-block { flex: 1; }
+  .loc-h1 { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; color: var(--text); line-height: 1.1; }
+  .loc-subtitle { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+  .status-badge { padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: 600; white-space: nowrap; display: inline-flex; align-items: center; gap: 5px; }
+  .badge-green { background: var(--green-light); color: var(--green-text); } .badge-amber { background: var(--amber-light); color: var(--amber-text); } .badge-red { background: var(--red-light); color: var(--red-text); } .badge-slate { background: var(--slate-light); color: #3a4460; }
+  .loc-header-actions { display: flex; flex-direction: column; align-items: flex-end; gap: 8px; flex-shrink: 0; }
+
+  /* SCORE DISPLAY IN HEADER */
+  .header-score-wrap { display: flex; flex-direction: column; align-items: center; background: var(--bg); border-radius: 10px; padding: 8px 14px; border: 1px solid var(--border); min-width: 80px; }
+  .header-score-num { font-family: 'Fraunces', serif; font-size: 26px; font-weight: 600; line-height: 1; }
+  .header-score-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); margin-top: 2px; }
+
+  .tabs { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; flex-shrink: 0; }
+  .tab { padding: 10px 18px; font-size: 13px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; transition: all 0.15s; white-space: nowrap; user-select: none; }
+  .tab.active { color: var(--text); border-bottom-color: var(--green); font-weight: 600; }
+  .panels-wrapper { flex: 1; overflow-y: auto; scrollbar-width: thin; scrollbar-color: var(--border) transparent; }
+  .panels-wrapper::-webkit-scrollbar { width: 6px; }
+  .panels-wrapper::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .panel { display: none; padding: 20px 24px 32px; }
+  .panel.active { display: block; }
+
+  /* OVERVIEW */
+  .rec-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--green); font-weight: 600; margin-bottom: 6px; }
+  .rec-box { background: linear-gradient(135deg, #f0f7f1 0%, #e8f4e9 100%); border-left: 4px solid var(--green); border-radius: 0 10px 10px 0; padding: 14px 18px; margin-bottom: 20px; font-size: 14px; line-height: 1.7; color: #253028; }
+  .afford-banner { border-radius: 10px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; display: flex; align-items: flex-start; gap: 10px; }
+  .afford-green { background: var(--green-light); border: 1px solid #c3e6cb; color: var(--green-text); }
+  .afford-amber { background: var(--amber-light); border: 1px solid #fce8a1; color: var(--amber-text); }
+  .afford-red { background: var(--red-light); border: 1px solid #f1b8be; color: var(--red-text); }
+  .afford-icon { font-size: 18px; flex-shrink: 0; }
+  .afford-title { font-weight: 600; margin-bottom: 2px; }
+  .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 1px; color: var(--text-light); font-weight: 600; margin-bottom: 10px; margin-top: 20px; }
+  .key-stats { display: grid; grid-template-columns: repeat(auto-fill, minmax(148px, 1fr)); gap: 10px; margin-bottom: 6px; }
+  .kstat { background: var(--surface); border-radius: 10px; padding: 14px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+  .kstat-icon { font-size: 18px; margin-bottom: 8px; }
+  .kstat-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-light); margin-bottom: 4px; }
+  .kstat-value { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1; font-family: 'Fraunces', serif; }
+  .kstat-detail { font-size: 11px; color: var(--text-muted); margin-top: 4px; line-height: 1.4; }
+  .lifestyle-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+  .litem { background: var(--surface); border-radius: 10px; padding: 14px; border: 1px solid var(--border); }
+  .litem-top { display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px; }
+  .litem-name { font-size: 13px; font-weight: 600; color: var(--text); }
+  .litem-stars { color: #e8b84b; font-size: 12px; letter-spacing: 1px; }
+  .litem-desc { font-size: 12px; color: var(--text-muted); line-height: 1.5; }
+  .price-ok { color: var(--green); } .price-warn { color: var(--amber); } .price-over { color: var(--red); }
+
+  /* CRIME SECTION */
+  .crime-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 12px; }
+  .crime-metric { background: var(--surface); border-radius: 10px; padding: 13px; border: 1px solid var(--border); }
+  .crime-metric-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-light); margin-bottom: 5px; }
+  .crime-metric-value { font-size: 16px; font-weight: 700; font-family: 'Fraunces', serif; line-height: 1; margin-bottom: 3px; }
+  .crime-metric-note { font-size: 11px; color: var(--text-muted); line-height: 1.4; }
+  .crime-val-good { color: var(--green); }
+  .crime-val-neutral { color: var(--text-muted); }
+  .crime-val-concern { color: var(--amber); }
+  .crime-val-bad { color: var(--red); }
+
+  .crime-risk-badge { display: inline-flex; align-items: center; gap: 5px; padding: 3px 10px; border-radius: 20px; font-size: 12px; font-weight: 600; }
+  .risk-lower { background: var(--green-light); color: var(--green-text); }
+  .risk-similar { background: var(--amber-light); color: var(--amber-text); }
+  .risk-higher { background: var(--red-light); color: var(--red-text); }
+
+  .crime-lists { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px; }
+  .crime-list-box { background: var(--surface); border-radius: 10px; padding: 12px; border: 1px solid var(--border); }
+  .crime-list-title { font-size: 11px; font-weight: 600; margin-bottom: 7px; }
+  .crime-list-title.positives { color: var(--green); }
+  .crime-list-title.concerns { color: var(--amber); }
+  .crime-list-item { font-size: 12px; color: var(--text-muted); padding: 3px 0; display: flex; gap: 6px; align-items: flex-start; line-height: 1.4; }
+
+  .crime-disclaimer { background: var(--bg); border-radius: 8px; padding: 10px 13px; font-size: 11px; color: var(--text-light); line-height: 1.5; border: 1px solid var(--border); }
+
+  /* SCORE BREAKDOWN (in stats panel) */
+  .score-breakdown { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; margin-bottom: 20px; }
+  .sb-header { background: #f8f6f3; padding: 10px 16px; border-bottom: 1px solid var(--border); font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-light); font-weight: 600; display: flex; justify-content: space-between; align-items: center; }
+  .sb-total { font-family: 'Fraunces', serif; font-size: 20px; font-weight: 600; }
+  .sb-row { display: flex; align-items: center; gap: 12px; padding: 10px 16px; border-bottom: 1px solid #f5f2ee; }
+  .sb-row:last-child { border-bottom: none; }
+  .sb-label { font-size: 13px; color: var(--text-muted); width: 140px; flex-shrink: 0; }
+  .sb-bar-wrap { flex: 1; background: var(--bg); border-radius: 4px; height: 8px; overflow: hidden; }
+  .sb-bar { height: 100%; border-radius: 4px; background: var(--green); transition: width 0.5s ease; }
+  .sb-score { font-size: 13px; font-weight: 600; color: var(--text); min-width: 60px; text-align: right; }
+
+  /* MAP */
+  #map { height: 460px; border-radius: 12px; overflow: hidden; box-shadow: var(--shadow); margin-bottom: 16px; }
+  .poi-legend { background: var(--surface); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--border); display: flex; flex-wrap: wrap; gap: 12px; }
+  .poi-legend-title { width: 100%; font-size: 11px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); }
+  .poi-type-item { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--text-muted); }
+  .poi-color-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+  /* STATS TABLE */
+  .stats-table-wrap { background: var(--surface); border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
+  .stats-table { width: 100%; border-collapse: collapse; }
+  .stats-table th { text-align: left; padding: 10px 16px; background: #f8f6f3; font-size: 11px; text-transform: uppercase; letter-spacing: 0.6px; color: var(--text-light); font-weight: 600; border-bottom: 1px solid var(--border); }
+  .stats-table td { padding: 12px 16px; font-size: 13px; border-bottom: 1px solid #f5f2ee; vertical-align: top; }
+  .stats-table tr:last-child td { border-bottom: none; }
+  .stats-table td:first-child { font-weight: 500; color: var(--text-muted); width: 38%; }
+  .stat-note { font-size: 11px; color: var(--text-light); margin-top: 2px; }
+  .stats-section-head td { background: #f8f6f3; font-size: 10px; text-transform: uppercase; letter-spacing: 0.8px; color: var(--text-light); font-weight: 600; padding: 7px 16px; border-top: 1px solid var(--border); }
+
+  /* NOTES */
+  .notes-textarea { width: 100%; min-height: 160px; border: 1px solid var(--border); border-radius: 10px; padding: 14px; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); resize: vertical; background: var(--surface); line-height: 1.6; }
+  .notes-textarea:focus { outline: none; border-color: var(--green); box-shadow: 0 0 0 3px rgba(58,125,68,0.1); }
+  .save-btn { padding: 8px 20px; background: var(--green); color: white; border: none; border-radius: 8px; font-size: 13px; font-weight: 500; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .save-btn:hover { background: #2d6437; }
+  .visit-input-row { display: flex; gap: 8px; margin-top: 8px; }
+  .visit-input { flex: 1; border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; font-family: 'DM Sans', sans-serif; font-size: 13px; color: var(--text); background: var(--surface); }
+  .visit-input:focus { outline: none; border-color: var(--green); }
+  .add-visit-btn { padding: 8px 14px; background: var(--surface); border: 1px solid var(--border); border-radius: 8px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; color: var(--text); }
+  .add-visit-btn:hover { border-color: var(--green); color: var(--green); }
+  .visit-list { margin-top: 10px; display: flex; flex-direction: column; gap: 6px; }
+  .visit-item { display: flex; gap: 10px; align-items: flex-start; padding: 10px 12px; background: var(--surface); border-radius: 8px; border: 1px solid var(--border); font-size: 13px; }
+  .visit-date { font-size: 11px; color: var(--text-light); white-space: nowrap; min-width: 70px; margin-top: 1px; }
+  .visit-note-text { color: var(--text); flex: 1; }
+  .remove-visit { background: none; border: none; color: var(--text-light); cursor: pointer; font-size: 14px; padding: 0; flex-shrink: 0; }
+  .remove-visit:hover { color: var(--red); }
+  .crossed-banner { background: rgba(0,0,0,0.04); color: #888; border-radius: 10px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px; display: flex; align-items: center; gap: 10px; }
+  .restore-link { color: var(--green); cursor: pointer; text-decoration: underline; }
+
+  /* AI MODAL */
+  .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.55); z-index: 1000; align-items: center; justify-content: center; backdrop-filter: blur(4px); }
+  .modal-overlay.open { display: flex; }
+  .ai-modal { background: var(--surface); border-radius: 20px; width: 500px; max-width: 94vw; box-shadow: var(--shadow-md); position: relative; overflow: hidden; }
+  .modal-state { padding: 32px; }
+  .modal-state.hidden { display: none; }
+  .modal-close-x { position: absolute; top: 14px; right: 14px; background: var(--bg); border: none; color: var(--text-muted); width: 30px; height: 30px; border-radius: 50%; font-size: 18px; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 10; }
+  .modal-close-x:hover { background: var(--border); color: var(--text); }
+  .ai-search-hero { text-align: center; margin-bottom: 24px; }
+  .ai-sparkle { font-size: 40px; margin-bottom: 12px; display: block; }
+  .ai-search-hero h2 { font-family: 'Fraunces', serif; font-size: 22px; color: var(--text); margin-bottom: 6px; }
+  .ai-search-hero p { font-size: 13px; color: var(--text-muted); line-height: 1.6; max-width: 380px; margin: 0 auto; }
+  .ai-search-row { display: flex; margin-top: 20px; border: 2px solid var(--border); border-radius: 12px; overflow: hidden; transition: border-color 0.2s; }
+  .ai-search-row:focus-within { border-color: var(--green); box-shadow: 0 0 0 4px rgba(58,125,68,0.1); }
+  .ai-search-row input { flex: 1; border: none; padding: 14px 16px; font-size: 16px; font-family: 'DM Sans', sans-serif; color: var(--text); background: transparent; outline: none; }
+  .ai-research-btn { background: var(--green); border: none; padding: 14px 20px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; display: flex; align-items: center; gap: 8px; white-space: nowrap; }
+  .ai-research-btn:hover { background: #2d6437; }
+  .ai-search-hint { font-size: 12px; color: var(--text-light); text-align: center; margin-top: 10px; }
+  .ai-examples { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; margin-top: 14px; }
+  .ai-example { background: var(--bg); border: 1px solid var(--border); border-radius: 20px; padding: 4px 12px; font-size: 12px; color: var(--text-muted); cursor: pointer; transition: all 0.15s; }
+  .ai-example:hover { border-color: var(--green); color: var(--green); background: var(--green-light); }
+  .loading-center { text-align: center; }
+  .ai-orb { width: 64px; height: 64px; background: linear-gradient(135deg,#3a7d44,#7eb87a); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 28px; margin: 0 auto 20px; animation: pulse 2s ease-in-out infinite; }
+  @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(58,125,68,0.4); } 70% { box-shadow: 0 0 0 16px rgba(58,125,68,0); } 100% { box-shadow: 0 0 0 0 rgba(58,125,68,0); } }
+  .loading-title { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 6px; }
+  .loading-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 24px; }
+  .research-steps { display: flex; flex-direction: column; gap: 8px; }
+  .rstep { display: flex; align-items: center; gap: 12px; padding: 10px 14px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); font-size: 13px; color: var(--text-muted); opacity: 0.4; transition: all 0.4s ease; }
+  .rstep.active { opacity: 1; border-color: var(--green); background: var(--green-light); color: var(--green-text); }
+  .rstep.done { opacity: 0.7; }
+  .rstep-icon { width: 22px; height: 22px; border-radius: 50%; background: rgba(0,0,0,0.06); display: flex; align-items: center; justify-content: center; font-size: 12px; flex-shrink: 0; }
+  .rstep.active .rstep-icon { background: var(--green); color: white; }
+  .preview-location-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .preview-name { font-family: 'Fraunces', serif; font-size: 24px; color: var(--text); }
+  .preview-county { font-size: 13px; color: var(--text-muted); margin-top: 3px; }
+  .preview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 14px; }
+  .preview-stat-card { background: var(--bg); border-radius: 10px; padding: 11px 13px; border: 1px solid var(--border); }
+  .psc-label { font-size: 10px; text-transform: uppercase; letter-spacing: 0.5px; color: var(--text-light); margin-bottom: 3px; }
+  .psc-value { font-weight: 600; color: var(--text); font-size: 14px; }
+  .psc-sub { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .preview-rec-text { background: var(--bg); border-radius: 10px; padding: 12px 14px; font-size: 13px; line-height: 1.65; color: var(--text-muted); border: 1px solid var(--border); margin-bottom: 16px; max-height: 110px; overflow-y: auto; }
+  .lifestyle-mini { display: flex; gap: 8px; margin-bottom: 16px; }
+  .lm-item { flex: 1; text-align: center; background: var(--bg); border-radius: 8px; padding: 8px 6px; border: 1px solid var(--border); }
+  .lm-label { font-size: 10px; color: var(--text-light); margin-bottom: 3px; }
+  .lm-stars { font-size: 11px; color: #e8b84b; }
+  .preview-actions { display: flex; gap: 8px; }
+  .btn-discard { flex: 1; padding: 11px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; color: var(--text-muted); }
+  .btn-confirm { flex: 2; padding: 11px; background: var(--green); border: none; border-radius: 10px; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; color: white; }
+  .error-center { text-align: center; }
+  .error-icon-big { font-size: 48px; margin-bottom: 16px; display: block; }
+  .error-title { font-family: 'Fraunces', serif; font-size: 20px; margin-bottom: 8px; }
+  .error-msg { font-size: 13px; color: var(--text-muted); line-height: 1.6; margin-bottom: 24px; }
+  .error-actions { display: flex; gap: 8px; justify-content: center; }
+  .btn-try-again { padding: 10px 24px; background: var(--green); border: none; border-radius: 10px; color: white; font-size: 14px; font-weight: 600; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .btn-cancel-modal { padding: 10px 20px; background: var(--bg); border: 1px solid var(--border); border-radius: 10px; color: var(--text-muted); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+  .leaflet-popup-content-wrapper { border-radius: 10px; font-family: 'DM Sans', sans-serif; }
+  .leaflet-popup-content { font-size: 13px; line-height: 1.5; margin: 10px 14px; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <div class="logo">
+    <div class="logo-icon">🏡</div>
+    <span class="logo-text">Commuter<span>Finder</span></span>
+  </div>
+  <div class="hdiv"></div>
+  <div class="filter-group">
+    <span class="filter-label">Income</span>
+    <div class="salary-wrapper">
+      <input type="range" id="salarySlider" min="80000" max="220000" step="5000" value="115000">
+      <div>
+        <div class="salary-amount" id="salaryDisplay">£115k</div>
+        <div class="salary-sub" id="mortgageDisplay">↳ ~£557k buying power</div>
+      </div>
+    </div>
+  </div>
+  <div class="hdiv"></div>
+  <div class="filter-group">
+    <span class="filter-label">Deposit £k</span>
+    <input type="number" class="deposit-input" id="depositInput" value="40" min="0" max="500">
+  </div>
+  <div class="hdiv"></div>
+  <div class="filter-group">
+    <span class="filter-label">Terminal</span>
+    <div class="terminal-group">
+      <button class="term-btn active" data-terminal="any" onclick="setTerminal(this)">Any</button>
+      <button class="term-btn" data-terminal="King's Cross" onclick="setTerminal(this)">King's Cross</button>
+      <button class="term-btn" data-terminal="Paddington" onclick="setTerminal(this)">Paddington</button>
+      <button class="term-btn" data-terminal="Liverpool Street" onclick="setTerminal(this)">Liverpool St</button>
+      <button class="term-btn" data-terminal="Euston" onclick="setTerminal(this)">Euston</button>
+      <button class="term-btn" data-terminal="Marylebone" onclick="setTerminal(this)">Marylebone</button>
+    </div>
+  </div>
+  <div class="header-spacer"></div>
+  <button class="add-btn" onclick="openAddModal()">✦ Add Location</button>
+</header>
+
+<div class="app-body">
+  <aside class="sidebar">
+    <div class="sidebar-section-label">Sorted by recommendation score</div>
+    <div class="location-list" id="locationList"></div>
+    <div class="sidebar-add">
+      <button class="sidebar-add-btn" onclick="openAddModal()">✦ Research a new town with AI</button>
+    </div>
+  </aside>
+  <main class="main-content" id="mainContent"></main>
+</div>
+
+<!-- AI SEARCH MODAL -->
+<div class="modal-overlay" id="addModal">
+  <div class="ai-modal">
+    <button class="modal-close-x" onclick="closeAddModal()">×</button>
+    <div class="modal-state" id="modal-idle">
+      <div class="ai-search-hero">
+        <span class="ai-sparkle">✦</span>
+        <h2>Research a Location</h2>
+        <p>Type any UK town or London borough and Claude will search for current property prices, commute times, crime stats, and more — tailored to your situation.</p>
+      </div>
+      <div class="ai-search-row">
+        <input type="text" id="townSearchInput" placeholder="Town or borough name..." onkeydown="if(event.key==='Enter') triggerAISearch()">
+        <button class="ai-research-btn" onclick="triggerAISearch()">Research ✦</button>
+      </div>
+      <div class="ai-search-hint">Works for any UK town or London borough within commuting distance</div>
+      <div class="ai-examples">
+        <span class="ai-example" onclick="fillAndSearch('Ware')">Ware</span>
+        <span class="ai-example" onclick="fillAndSearch('Royston')">Royston</span>
+        <span class="ai-example" onclick="fillAndSearch('Hatfield')">Hatfield</span>
+        <span class="ai-example" onclick="fillAndSearch('Potters Bar')">Potters Bar</span>
+        <span class="ai-example" onclick="fillAndSearch('Hertford')">Hertford</span>
+        <span class="ai-example" onclick="fillAndSearch('Chingford')">Chingford</span>
+      </div>
+    </div>
+    <div class="modal-state hidden" id="modal-loading">
+      <div class="loading-center">
+        <div class="ai-orb">✦</div>
+        <div class="loading-title">Researching <span id="searchingName" style="color:var(--green)"></span>…</div>
+        <div class="loading-sub">Searching for current 2025/2026 data</div>
+      </div>
+      <div class="research-steps">
+        <div class="rstep" id="step-prices"><div class="rstep-icon">📊</div> Property prices — sale & rental</div>
+        <div class="rstep" id="step-commute"><div class="rstep-icon">🚂</div> Train services, commute times & terminal</div>
+        <div class="rstep" id="step-ticket"><div class="rstep-icon">🎫</div> Annual season ticket cost</div>
+        <div class="rstep" id="step-crime"><div class="rstep-icon">🔒</div> Crime stats — burglary, overall, LGBT risk</div>
+        <div class="rstep" id="step-rec"><div class="rstep-icon">📝</div> Writing personalised assessment</div>
+      </div>
+    </div>
+    <div class="modal-state hidden" id="modal-preview">
+      <div id="preview-inner"></div>
+    </div>
+    <div class="modal-state hidden" id="modal-error">
+      <div class="error-center">
+        <span class="error-icon-big">⚠️</span>
+        <div class="error-title">Couldn't find data</div>
+        <div class="error-msg" id="error-msg">Try checking the spelling, or try a nearby larger town.</div>
+        <div class="error-actions">
+          <button class="btn-cancel-modal" onclick="closeAddModal()">Cancel</button>
+          <button class="btn-try-again" onclick="setModalState('idle')">Try Again</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════
+// CONSTANTS
+// ═══════════════════════════════════════════
+const POI_COLORS = { transport:'#1a2332', walk:'#3a7d44', eat:'#c05c00', shop:'#6f42c1', culture:'#0d7a8a' };
+const POI_ICONS  = { transport:'🚂', walk:'🌳', eat:'🍽️', shop:'🛍️', culture:'🏛️' };
+
+// ═══════════════════════════════════════════
+// SCORING ENGINE
+// ═══════════════════════════════════════════
+function calculateScore(loc) {
+  const aff = getAff(loc);
+  const termMatch = state.terminal === 'any' || loc.commute.terminal === state.terminal;
+
+  // 1. Affordability (0-30)
+  const affScore = aff === 'comfortable' ? 30 : aff === 'tight' ? 16 : 4;
+
+  // 2. Commute (0-25) — heavy penalty if terminal doesn't match
+  let commuteScore;
+  if (!termMatch && state.terminal !== 'any') {
+    commuteScore = 2;
+  } else {
+    const t = loc.commute.timeMin;
+    if (t <= 28) commuteScore = 25;
+    else if (t <= 33) commuteScore = 22;
+    else if (t <= 38) commuteScore = 18;
+    else if (t <= 42) commuteScore = 14;
+    else if (t <= 47) commuteScore = 9;
+    else commuteScore = 4;
+  }
+
+  // 3. Lifestyle (0-20)
+  const ls = loc.lifestyle;
+  const lifestyleScore = Math.round(((ls.dogWalking + ls.dining + ls.shopping + ls.character) / 4) * 4);
+
+  // 4. Crime (0-15)
+  let crimeScore = 10; // default if no data
+  if (loc.crime) {
+    const o = loc.crime.overallVsNational; // % vs national, negative = safer
+    if (o <= -15)       crimeScore = 15;
+    else if (o <= -5)   crimeScore = 13;
+    else if (o <= 5)    crimeScore = 11;
+    else if (o <= 15)   crimeScore = 7;
+    else                crimeScore = 3;
+    // Burglary modifier
+    const b = loc.crime.burglaryVsNational;
+    if (b < -30)        crimeScore = Math.min(15, crimeScore + 2);
+    else if (b > 20)    crimeScore = Math.max(0, crimeScore - 2);
+    // LGBT modifier
+    if (loc.crime.lgbtRisk === 'higher') crimeScore = Math.max(0, crimeScore - 4);
+    else if (loc.crime.lgbtRisk === 'similar') crimeScore = Math.max(0, crimeScore - 1);
+  }
+
+  // 5. Status (0-10)
+  const statusScore = loc.baseStatus === 'recommended' ? 10 : loc.baseStatus === 'borderline' ? 5 : 0;
+
+  const total = affScore + commuteScore + lifestyleScore + crimeScore + statusScore;
+  return {
+    total: Math.min(100, Math.max(0, total)),
+    components: { aff: affScore, commute: commuteScore, lifestyle: lifestyleScore, crime: crimeScore, status: statusScore }
+  };
+}
+
+function getScoreBadgeCls(score, isCrossed) {
+  if (isCrossed) return 'score-dim';
+  if (score >= 72) return 'score-high';
+  if (score >= 52) return 'score-mid';
+  return 'score-low';
+}
+
+function lastTrainRating(departs) {
+  // Parse HH:MM — treat times before 06:00 as post-midnight (add 24h for comparison)
+  if (!departs) return null;
+  const clean = departs.replace('~','').trim();
+  const [h, m] = clean.split(':').map(Number);
+  const mins = (h < 6 ? h + 24 : h) * 60 + m;
+  if (mins >= 23*60 + 30) return 'green';   // 23:30 or later (incl. after midnight)
+  if (mins >= 23*60)      return 'amber';   // 23:00–23:29
+  return 'red';                              // before 23:00
+}
+
+function lastTrainBadge(loc) {
+  if (!loc.lastTrain) return null;
+  const rating = lastTrainRating(loc.lastTrain.departs);
+  const isApprox = loc.lastTrain.departs.startsWith('~');
+  const colors = { green:'var(--green-light)', amber:'var(--amber-light)', red:'var(--red-light)' };
+  const textColors = { green:'var(--green-text)', amber:'var(--amber-text)', red:'var(--red-text)' };
+  const labels = { green:'Late night friendly', amber:'Leave by ~22:30', red:'Early finish needed' };
+  return { rating, isApprox, bg: colors[rating], color: textColors[rating], label: labels[rating] };
+}
+
+function getHeaderScoreColor(score) {
+  if (score >= 72) return 'var(--green)';
+  if (score >= 52) return 'var(--amber)';
+  return 'var(--red)';
+}
+
+// ═══════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════
+const BASE_LOCATIONS = [
+  { id:'reading', name:'Reading', county:'Berkshire', lat:51.4584, lng:-0.9714, baseStatus:'recommended',
+    commute:{ time:'28 min', timeMin:28, terminal:'Paddington', line:'Elizabeth Line / GWR', freq:'Every 5–15 min peak' },
+    seasonTicket:{ annual:5100 },
+    costs:{ buyLow:390000, buyHigh:450000, rentLow:1700, rentHigh:1900 },
+    lastTrain:{ departs:'~01:45', arrives:'~02:10', note:'GWR from Paddington. Very late last service — one of the best on the arc for nights out.' },
+    crime:{ force:'Thames Valley Police', overallVsNational:+8, burglaryVsNational:-5, lgbtRisk:'similar',
+      lgbtNote:"Thames Valley is a large urban force covering Oxford, Reading and Slough. Sexual orientation hate crimes broadly in line with the national urban average. Reading has a visible, active LGBT+ scene centred around Kings Road and the LGBTQ+ venue The Purple Turtle.",
+      positives:['Burglary below national average','Thames Valley well-resourced force','Reading has active LGBT+ community and venues'],
+      concerns:['City-level ASB in some town centre areas','Shoplifting rising nationally'],
+      source:'CrimeRate.co.uk / police.uk data to Nov 2025' },
+    lifestyle:{ dogWalking:4, dogWalkingNotes:'Thames Path, Forbury Gardens, Prospect Park — excellent riverside and urban green space.', dining:4, diningNotes:'Strong independent food scene; vibrant café culture across the town centre and Caversham.', shopping:4, shoppingNotes:'The Oracle and Broad Street Mall for high street; Kings Road for independents.', character:4, characterNotes:'Vibrant university city with a young population, good nightlife, and a growing creative community.' },
+    recommendation:'Reading is the strongest value proposition on the western arc. An excellent Elizabeth Line service puts Paddington in 28 minutes. The town has genuine city-level amenities, Thames-side walks for Scarlet, and property is notably cheaper than comparable Hertfordshire towns. Its university city character means a visible LGBT+ scene and generally welcoming culture.',
+    pois:[{name:'Reading Station',lat:51.4583,lng:-0.9714,type:'transport',desc:'Elizabeth Line & GWR. Paddington in 28 min.'},{name:'Thames Path',lat:51.4550,lng:-0.9720,type:'walk',desc:'Superb riverside walks — excellent for dogs all year.'},{name:'Forbury Gardens',lat:51.4553,lng:-0.9643,type:'walk',desc:'Lovely town-centre park with Victorian lion statue.'},{name:'Prospect Park',lat:51.4497,lng:-0.9910,type:'walk',desc:'Large park with woodland, lake and open fields.'},{name:'The Oracle / Riverside',lat:51.4551,lng:-0.9705,type:'eat',desc:'Main waterside restaurant and bar strip.'},{name:'Kings Road Cafes',lat:51.4570,lng:-0.9687,type:'eat',desc:"Heart of Reading's independent food and LGBT+ scene."}]
+  },
+  { id:'highwycombe', name:'High Wycombe', county:'Buckinghamshire', lat:51.6286, lng:-0.7482, baseStatus:'recommended',
+    commute:{ time:'28 min', timeMin:28, terminal:'Marylebone', line:'Chiltern Railways', freq:'Every 15–30 min peak' },
+    seasonTicket:{ annual:4500 },
+    costs:{ buyLow:375000, buyHigh:440000, rentLow:1600, rentHigh:1800 },
+    lastTrain:{ departs:'~23:15', arrives:'~23:43', note:'Chiltern Railways from Marylebone. Reasonable — allows a proper evening but not a very late night. Verify on National Rail.' },
+    crime:{ force:'Thames Valley Police', overallVsNational:0, burglaryVsNational:-12, lgbtRisk:'similar',
+      lgbtNote:"Thames Valley force area — rates broadly at national average. High Wycombe has a diverse population but limited visible LGBT+ specific scene; nearest active scene is in Reading or London.",
+      positives:['Burglary 12% below national average','Vehicle crime falling'],
+      concerns:['Some ASB in town centre','Urban diversity means varied neighbourhood character'],
+      source:'CrimeRate.co.uk / police.uk data to Nov 2025' },
+    lifestyle:{ dogWalking:5, dogWalkingNotes:'Outstanding — right on the Chiltern Hills AONB. West Wycombe Park, Rye Park, and miles of countryside walks.', dining:3, diningNotes:'Mixed in town; better in surrounding villages. Marlow (15 min drive) has excellent restaurants.', shopping:3, shoppingNotes:'Eden Shopping Centre covers basics. Town centre is functional rather than inspiring.', character:3, characterNotes:'Mixed — the surrounding hills are beautiful but the town centre has some challenges. Good schools nearby.' },
+    recommendation:"High Wycombe has one of the fastest commutes on the list and the most affordable property. The real draw is countryside access — you're on the Chiltern Hills AONB, which is outstanding for Scarlet. The town centre itself requires realistic expectations. Crime is broadly at or below national average, with burglary meaningfully lower.",
+    pois:[{name:'High Wycombe Station',lat:51.6278,lng:-0.7480,type:'transport',desc:'Chiltern Railways to Marylebone. 28 min.'},{name:'Rye Park',lat:51.6241,lng:-0.7547,type:'walk',desc:'Large park with river — good for daily dog walks.'},{name:'West Wycombe Park (NT)',lat:51.6436,lng:-0.8116,type:'walk',desc:'NT landscape park. Beautiful hillside walks.'},{name:'Chilterns AONB',lat:51.6700,lng:-0.8000,type:'walk',desc:'Hundreds of miles of AONB trails from the doorstep.'},{name:'Marlow',lat:51.5706,lng:-0.7769,type:'eat',desc:'15 min drive — excellent restaurants and Thames walks.'}]
+  },
+  { id:'hemel', name:'Hemel Hempstead', county:'Hertfordshire', lat:51.7532, lng:-0.4486, baseStatus:'recommended',
+    commute:{ time:'33 min', timeMin:33, terminal:'Euston', line:'London Northwestern Railway', freq:'Every 20–30 min peak' },
+    seasonTicket:{ annual:3700 },
+    costs:{ buyLow:400000, buyHigh:460000, rentLow:1600, rentHigh:1800 },
+    lastTrain:{ departs:'01:39', arrives:'02:09', note:'London Northwestern from Euston. Exceptionally late — tied with Reading for best late-night flexibility on the arc.' },
+    crime:{ force:'Hertfordshire Constabulary', overallVsNational:-14, burglaryVsNational:-14, lgbtRisk:'lower',
+      lgbtNote:"Hertfordshire Constabulary records sexual orientation hate crime below national urban averages. Predominantly suburban force area. Hemel itself has limited visible LGBT+ scene but is close to St Albans (15 min) which has more.",
+      positives:['14% below national crime average','Burglary 14% below national','Hertfordshire Constabulary — lower crime force area'],
+      concerns:['Limited local LGBT+ visible scene'],
+      source:'CrimeRate.co.uk (Hertfordshire: 0.86× national burglary) / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:3, dogWalkingNotes:'Gade Valley, Grand Union Canal towpath, and Sheethanger Common — workable for daily walks but not outstanding.', dining:3, diningNotes:'Old Town area has decent independents. Overall functional rather than exciting.', shopping:3, shoppingNotes:'Marlowes covers essentials. Close to Watford (15 min) for a better experience.', character:2, characterNotes:'Post-war new town. Old Town and Boxmoor areas have genuine charm. Goes in with realistic expectations.' },
+    recommendation:"Hemel is the pragmatic choice — lowest season ticket (~£3,700/yr), affordable property, solid 33-minute run to Euston, and one of the safer locations on the list with crime 14% below national average. The honest lifestyle take is functional rather than beautiful, but crime and safety figures are among the best on this arc.",
+    pois:[{name:'Hemel Hempstead Station',lat:51.7401,lng:-0.4479,type:'transport',desc:'London Northwestern to Euston. ~33 min.'},{name:'Grand Union Canal',lat:51.7430,lng:-0.4480,type:'walk',desc:'Canal towpath — pleasant flat walks for dogs.'},{name:'Gade Valley',lat:51.7452,lng:-0.4667,type:'walk',desc:'Green corridor with river meadows and countryside.'},{name:'Old Town',lat:51.7532,lng:-0.4542,type:'eat',desc:'Most characterful area — good pubs and cafes.'},{name:'Boxmoor Common',lat:51.7345,lng:-0.4602,type:'walk',desc:'Common land and canal — best of Hemel\'s green space.'}]
+  },
+  { id:'berkhamsted', name:'Berkhamsted', county:'Hertfordshire', lat:51.7608, lng:-0.5622, baseStatus:'future',
+    commute:{ time:'35 min', timeMin:35, terminal:'Euston', line:'London Northwestern Railway', freq:'Every 20–30 min peak' },
+    seasonTicket:{ annual:4200 },
+    costs:{ buyLow:600000, buyHigh:780000, rentLow:1800, rentHigh:2200 },
+    lastTrain:{ departs:'~01:15', arrives:'~01:50', note:'London Northwestern from Euston. Same corridor as Hemel — very late service. Verify on National Rail as timings vary.' },
+    crime:{ force:'Hertfordshire Constabulary', overallVsNational:-22, burglaryVsNational:-25, lgbtRisk:'lower',
+      lgbtNote:"One of the safest areas within an already below-average force. Very low crime across all categories. Affluent, stable community. Nearest visible LGBT+ scene in Hemel or St Albans.",
+      positives:['Among the safest towns in Hertfordshire','Burglary 25% below national average','Very low ASB and violence'],
+      concerns:['Limited local LGBT+ scene (closest in St Albans, 12 miles)'],
+      source:'CrimeRate.co.uk / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:5, dogWalkingNotes:'Exceptional — Ashridge Estate (NT, 5,000 acres), Grand Union Canal, Berkhamsted Common. Some of the best dog walking in Hertfordshire.', dining:4, diningNotes:'Strong independent high street with excellent restaurants, delis, and cafes.', shopping:4, shoppingNotes:'Great independent high street — everything you need without a shopping centre.', character:5, characterNotes:"One of Hertfordshire's most desirable market towns. Canal, castle ruins, Chilterns — beautiful and sought-after." },
+    recommendation:"Berkhamsted is genuinely one of the most desirable towns in Hertfordshire with some of the lowest crime on the entire list. The problem is property averages £600–780k+ for a 3-bed, firmly placing it in a future tier. Worth revisiting when London salaries are confirmed.",
+    pois:[{name:'Berkhamsted Station',lat:51.7623,lng:-0.5650,type:'transport',desc:'London Northwestern to Euston. ~35 min.'},{name:'Berkhamsted Castle',lat:51.7616,lng:-0.5603,type:'culture',desc:'Ruined Norman castle — atmospheric, free access.'},{name:'Grand Union Canal',lat:51.7608,lng:-0.5622,type:'walk',desc:'Canal through the town centre — beautiful towpath walks.'},{name:'Ashridge Estate (NT)',lat:51.8000,lng:-0.5500,type:'walk',desc:'5,000 acres of ancient woodland. Outstanding for dogs.'},{name:'High Street',lat:51.7613,lng:-0.5591,type:'eat',desc:'Excellent independent restaurants and delis.'}]
+  },
+  { id:'wgc', name:'Welwyn Garden City', county:'Hertfordshire', lat:51.8007, lng:-0.2039, baseStatus:'recommended',
+    commute:{ time:'30 min', timeMin:30, terminal:"King's Cross", line:'Great Northern', freq:'Every 10–15 min peak' },
+    seasonTicket:{ annual:3400 },
+    costs:{ buyLow:430000, buyHigh:490000, rentLow:1700, rentHigh:1900 },
+    lastTrain:{ departs:'23:06', arrives:'23:36', note:"Great Northern from King's Cross. Leaves at 23:06 — you need to be at King's Cross by then. That means leaving a restaurant or bar by about 22:40." },
+    crime:{ force:'Hertfordshire Constabulary', overallVsNational:-14, burglaryVsNational:-14, lgbtRisk:'lower',
+      lgbtNote:"Hertfordshire overall is below national average for all hate crime categories. WGC is a planned garden city with a diverse, generally inclusive community. Limited local LGBT+ nightlife but broadly welcoming.",
+      positives:['14% below national crime average','Low burglary for a town this size','Planned garden city = well-lit, well-designed streets'],
+      concerns:[],
+      source:'CrimeRate.co.uk / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:4, dogWalkingNotes:"Panshanger Park (1,000 acres of river meadows and woodland), Sherrardspark Wood, and green corridors throughout the town. Excellent.", dining:3, diningNotes:'Adequate rather than exciting. Restaurant scene is growing but limited independent options.', shopping:3, shoppingNotes:'Howard Centre and town centre cover essentials including John Lewis partnership store.', character:3, characterNotes:"Britain's second garden city — tree-lined boulevards and planned green space. Pleasant but more modern than Letchworth." },
+    recommendation:"WGC has the most reliable commute on the list — a consistent 30 minutes to King's Cross. Crime is 14% below national average across the board. Panshanger Park is brilliant for Scarlet. This is the choice if commute reliability and safety combined matter most.",
+    pois:[{name:'WGC Station',lat:51.8007,lng:-0.2039,type:'transport',desc:"Great Northern to King's Cross. Consistent 30 min."},{name:'Panshanger Park',lat:51.8152,lng:-0.1677,type:'walk',desc:"1,000 acres of river meadows. Outstanding for dogs."},{name:'Sherrardspark Wood',lat:51.8178,lng:-0.1958,type:'walk',desc:'Ancient woodland in the heart of WGC.'},{name:'Howard Centre',lat:51.8017,lng:-0.2061,type:'shop',desc:'Main shopping including John Lewis partnership.'},{name:'Campus West',lat:51.8025,lng:-0.2080,type:'culture',desc:'Theatre, cinema, and events venue.'}]
+  },
+  { id:'hitchin', name:'Hitchin', county:'Hertfordshire', lat:51.9492, lng:-0.2834, baseStatus:'borderline',
+    commute:{ time:'33–42 min', timeMin:38, terminal:"King's Cross", line:'Great Northern / Thameslink', freq:'Every 15–20 min (fastest: 33 min)' },
+    seasonTicket:{ annual:4700 },
+    costs:{ buyLow:450000, buyHigh:510000, rentLow:1500, rentHigh:1800 },
+    lastTrain:{ departs:'~23:31', arrives:'~00:04', note:"Great Northern/Thameslink from King's Cross. Hitchin is on the Letchworth corridor — last service around 23:31 gets you home just after midnight. Good for a late evening." },
+    crime:{ force:'Hertfordshire Constabulary', overallVsNational:-14, burglaryVsNational:-14, lgbtRisk:'lower',
+      lgbtNote:"Hertfordshire below national average for LGBT hate crime. Hitchin has a strong, inclusive community feel and regularly features in 'best places to live' surveys for quality of life. Small-town environment but known for its welcoming character.",
+      positives:['14% below national crime average','Burglary below national average','Strong community identity and safety reputation'],
+      concerns:['Buying budget is tight — competition for lower-priced properties'],
+      source:'CrimeRate.co.uk / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:5, dogWalkingNotes:'Priory Park with river Hiz walks, lavender fields nearby in summer, and beautiful surrounding Hertfordshire countryside. Superb.', dining:5, diningNotes:"One of Hertfordshire's very best independent food scenes — great cafes, restaurants, and a wonderful weekly market.", shopping:4, shoppingNotes:'Excellent independent high street with regular market, good delis, and characterful shops.', character:5, characterNotes:'Regularly ranked one of the happiest places to live in the UK. Cobbled streets, Gothic church, lavender fields, strong community.' },
+    recommendation:"Hitchin is the best lifestyle option on this list by a clear margin. It also scores well on safety — 14% below national crime average. The buying budget is tight at £115k (3-bed semis from £450k) but the fastest trains do King's Cross in 33 minutes. And your family are nearby. If you can find the right property, Hitchin is where you'll want to be.",
+    pois:[{name:'Hitchin Station',lat:51.9479,lng:-0.2781,type:'transport',desc:"Great Northern to King's Cross. Fastest 33 min."},{name:'Priory Park',lat:51.9463,lng:-0.2851,type:'walk',desc:'Beautiful park with River Hiz walks — excellent for dogs.'},{name:"St Mary's & Bancroft",lat:51.9499,lng:-0.2820,type:'culture',desc:"The iconic Gothic church and cobbled Bancroft — heart of Hitchin."},{name:'Market Place',lat:51.9500,lng:-0.2827,type:'shop',desc:'Weekly market and brilliant independent shops.'},{name:'Hitchin Lavender',lat:51.9820,lng:-0.3066,type:'walk',desc:'Stunning in summer — lavender fields and countryside walks.'}]
+  },
+  { id:'letchworth', name:'Letchworth Garden City', county:'Hertfordshire', lat:51.9799, lng:-0.2293, baseStatus:'recommended',
+    commute:{ time:'29–46 min', timeMin:40, terminal:"King's Cross", line:'Great Northern / Thameslink', freq:'Every 15–30 min (fast services ~30 min)' },
+    seasonTicket:{ annual:5000 },
+    costs:{ buyLow:440000, buyHigh:530000, rentLow:1400, rentHigh:1700 },
+    lastTrain:{ departs:'23:31', arrives:'00:09', note:"Great Northern from King's Cross. Confirmed last departure 23:31 — you're home just after midnight, which gives a solid evening in London." },
+    crime:{ force:'Hertfordshire Constabulary', overallVsNational:-14, burglaryVsNational:-14, lgbtRisk:'lower',
+      lgbtNote:"Hertfordshire below national average for hate crime. Letchworth as a garden city has a long history of progressive values and community spirit — the original garden city movement was ahead of its time in many social respects. Small but welcoming community.",
+      positives:['14% below national crime average','Low burglary','Garden city design = well-lit planned streets with good sightlines'],
+      concerns:['Limited local LGBT+ nightlife (Hitchin 5 miles, better options there)'],
+      source:'CrimeRate.co.uk / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:5, dogWalkingNotes:'Norton Common (66 acres of ancient woodland next to the station), Broadway Gardens, Standalone Farm. Outstanding.', dining:3, diningNotes:'Improving steadily. Hitchin (10 min, 5 miles) for a better night out.', shopping:3, shoppingNotes:'Good Morrisons and growing independent scene. Functional and improving.', character:4, characterNotes:"World's first garden city (1903) — unique Arts & Crafts heritage, green corridors, strong community identity." },
+    recommendation:"Letchworth is the best value for money of the Hertfordshire towns. Crime is 14% below national average. Norton Common is 66 acres of ancient woodland right next to the station for Scarlet. Rents are the most affordable on the arc. The garden city character is genuinely distinctive and the progressive community values suit you well.",
+    pois:[{name:'Letchworth Station',lat:51.9799,lng:-0.2293,type:'transport',desc:"Great Northern to King's Cross. Fast trains under 30 min."},{name:'Norton Common',lat:51.9840,lng:-0.2402,type:'walk',desc:'66 acres of ancient woodland. Outstanding for dogs.'},{name:'Broadway Gardens',lat:51.9768,lng:-0.2289,type:'walk',desc:'Beautiful formal gardens — classic garden city design.'},{name:'Standalone Farm',lat:51.9975,lng:-0.2231,type:'walk',desc:'Working farm with countryside walks — great for dogs.'},{name:'Garden City Heritage Museum',lat:51.9782,lng:-0.2305,type:'culture',desc:'Celebrating the garden city movement.'}]
+  },
+  { id:'bishopsstortford', name:"Bishop's Stortford", county:'Hertfordshire / Essex border', lat:51.8667, lng:0.1649, baseStatus:'borderline',
+    commute:{ time:'45–50 min', timeMin:47, terminal:'Liverpool Street', line:'Greater Anglia', freq:'Every 20–30 min peak' },
+    seasonTicket:{ annual:5700 },
+    costs:{ buyLow:460000, buyHigh:510000, rentLow:1700, rentHigh:1900 },
+    lastTrain:{ departs:'~23:20', arrives:'~00:10', note:"Greater Anglia Cambridge line from Liverpool Street. Late enough for a good night — Cambridge line runs late but verify exact time on National Rail." },
+    crime:{ force:'Hertfordshire Constabulary', overallVsNational:-14, burglaryVsNational:-14, lgbtRisk:'lower',
+      lgbtNote:"Falls within Hertfordshire Constabulary area — below national average for hate crime. Attractive market town with a broadly welcoming community. Limited local LGBT+ nightlife but safe and inclusive day-to-day environment.",
+      positives:['Below national average crime','Low burglary','Safe, pleasant market town environment'],
+      concerns:['Commute averages 47–50 min — over your 45 min target','Limited local LGBT+ scene'],
+      source:'CrimeRate.co.uk / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:4, dogWalkingNotes:'River Stort navigation, Grange Paddocks, and surrounding Essex/Hertfordshire countryside. Very good for dog walks.', dining:4, diningNotes:'Good independent food scene for a market town — solid restaurants, cafes, and an attractive high street.', shopping:4, shoppingNotes:"Excellent independent high street with good variety. One of Essex/Herts' better town centres.", character:4, characterNotes:'Attractive market town with real character. Historic centre, pleasant riverside. Stansted Airport very close.' },
+    recommendation:"Bishop's Stortford is a lovely, safe market town that sits just above your 45-minute commute threshold (~47–50 min to Liverpool Street). Below-average crime across the board. If your jobs point toward Liverpool Street, this becomes considerably more compelling — otherwise the commute pushes it to borderline status.",
+    pois:[{name:"Bishop's Stortford Station",lat:51.8687,lng:0.1592,type:'transport',desc:'Greater Anglia to Liverpool Street. ~45–50 min.'},{name:'River Stort Navigation',lat:51.8702,lng:0.1638,type:'walk',desc:'Beautiful towpath walks — excellent for dogs.'},{name:'Grange Paddocks',lat:51.8640,lng:0.1632,type:'walk',desc:'Park and open space.'},{name:'High Street',lat:51.8686,lng:0.1648,type:'eat',desc:'Good independent restaurants and cafes.'}]
+  },
+  { id:'harlow', name:'Harlow', county:'Essex', lat:51.7810, lng:0.0910, baseStatus:'recommended',
+    commute:{ time:'35 min', timeMin:35, terminal:'Liverpool Street', line:'Greater Anglia', freq:'Every 15–20 min peak' },
+    seasonTicket:{ annual:4900 },
+    costs:{ buyLow:300000, buyHigh:370000, rentLow:1400, rentHigh:1700 },
+    lastTrain:{ departs:'~23:30', arrives:'~00:05', note:'Greater Anglia from Liverpool Street. Cambridge line runs late — good for evening flexibility. Verify exact last time on National Rail.' },
+    crime:{ force:'Essex Police', overallVsNational:+18, burglaryVsNational:-39, lgbtRisk:'similar',
+      lgbtNote:"Essex Police area — LGBT hate crime broadly at national average levels. Harlow's diverse, younger population means it scores similarly to national averages on hate crime rather than worse. However overall crime is elevated.",
+      positives:['Burglary has fallen dramatically — now 39% below national average','Ranked 2nd most dangerous in Essex but trajectory improving'],
+      concerns:['18% above national crime rate overall','Drugs 1.79× national average','Weapons possession 1.6× national','Violence and ASB higher than Hertfordshire alternatives'],
+      source:'CrimeRate.co.uk (Harlow: 41% higher than East of England, 18% higher than national) / police.uk to Oct 2025' },
+    lifestyle:{ dogWalking:3, dogWalkingNotes:"Harlow Town Park (80 acres) and Parndon Wood nature reserve are reasonable — the town was designed with green space, but it's not as scenic as countryside alternatives.", dining:2, diningNotes:'Limited independent scene. Mostly chains and takeaways. Not a food destination.', shopping:2, shoppingNotes:'Harvey Centre covers the basics. Limited independent shopping.', character:2, characterNotes:'Post-war new town with known challenges. Some interesting modernist architecture and public sculptures.' },
+    recommendation:"Harlow offers the lowest property prices on the arc — 3-bed semis from £300k is exceptional. The 35-minute service to Liverpool Street is solid. However, the crime picture is the most challenging on this list: 18% above national overall, with drugs and weapons above average. Burglary has actually improved significantly. Viable as a pure financial stepping stone, but lifestyle and safety don't match the other options.",
+    pois:[{name:'Harlow Town Station',lat:51.7810,lng:0.0951,type:'transport',desc:'Greater Anglia to Liverpool Street. ~35 min.'},{name:'Harlow Town Park',lat:51.7766,lng:0.1098,type:'walk',desc:'80-acre park — best green space for dog walks.'},{name:'Parndon Wood',lat:51.7620,lng:0.1124,type:'walk',desc:'Nature reserve with woodland walks.'},{name:'Water Gardens',lat:51.7769,lng:0.0997,type:'walk',desc:'Modernist water feature park — architecturally interesting.'}]
+  },
+  { id:'brentwood', name:'Brentwood', county:'Essex', lat:51.6205, lng:0.3072, baseStatus:'borderline',
+    commute:{ time:'35 min', timeMin:35, terminal:'Liverpool Street', line:'Elizabeth Line / Greater Anglia', freq:'Every 10–15 min peak (Elizabeth Line)' },
+    seasonTicket:{ annual:4900 },
+    costs:{ buyLow:500000, buyHigh:570000, rentLow:1700, rentHigh:1900 },
+    lastTrain:{ departs:'~00:30', arrives:'~01:05', note:'Elizabeth Line from Liverpool Street runs very late — around 00:30 on weekdays. Outstanding for late nights. One of the best on the arc.' },
+    crime:{ force:'Essex Police', overallVsNational:-10, burglaryVsNational:-36, lgbtRisk:'lower',
+      lgbtNote:"Brentwood is one of the safer Essex areas with crime below national average. Affluent suburban character means lower-than-average hate crime rates. Limited local LGBT+ scene but welcoming community.",
+      positives:['10% below national crime rate','Burglary fallen 40% in 3 years — now 36% below national','Among the safer areas in Essex'],
+      concerns:['Vehicle crime still 1.66× national average','Drugs trending upward','Buying budget tight at current salary'],
+      source:'CrimeRate.co.uk (Brentwood: 10% below national, burglary index 0.64×) / police.uk to Nov 2025' },
+    lifestyle:{ dogWalking:4, dogWalkingNotes:'Weald Country Park (500 acres) and Warley Country Park are excellent for dogs — some of the best Essex countryside.', dining:3, diningNotes:'Good high street with a mix of independent and chain restaurants. Above average for Essex.', shopping:3, shoppingNotes:'High Street has improved significantly — decent mix of independent and high street brands.', character:3, characterNotes:'Pleasant, aspirational Essex commuter town. A decent, well-connected suburb with good green space and schools.' },
+    recommendation:"Brentwood has a genuinely excellent Elizabeth Line commute (35 min to Liverpool Street, very high frequency) and is 10% below national crime average with burglary falling fast. The challenge is affordability at £115k — 3-bed semis averaging £500k+. Excellent for renting while building deposit, and very compelling once London salaries arrive.",
+    pois:[{name:'Brentwood Station',lat:51.6185,lng:0.3002,type:'transport',desc:'Elizabeth Line to Liverpool Street. 35 min, excellent frequency.'},{name:'Weald Country Park',lat:51.6326,lng:0.2825,type:'walk',desc:'500 acres of parkland and woodland. Exceptional dog walking.'},{name:'Warley Country Park',lat:51.5985,lng:0.3174,type:'walk',desc:'More parkland — varied walking routes.'},{name:'Brentwood High Street',lat:51.6199,lng:0.3049,type:'eat',desc:'Improving independent restaurant and cafe scene.'}]
+  },
+  { id:'chelmsford', name:'Chelmsford', county:'Essex', lat:51.7361, lng:0.4678, baseStatus:'recommended',
+    commute:{ time:'33 min', timeMin:33, terminal:'Liverpool Street', line:'Greater Anglia', freq:'Every 10–15 min peak' },
+    seasonTicket:{ annual:6200 },
+    costs:{ buyLow:345000, buyHigh:450000, rentLow:1500, rentHigh:1800 },
+    lastTrain:{ departs:'00:46', arrives:'01:19', note:'Greater Anglia from Liverpool Street. Confirmed last departure 00:46 — the latest on the entire list. You can stay in London until last orders and still get home.' },
+    crime:{ force:'Essex Police', overallVsNational:+18, burglaryVsNational:-43, lgbtRisk:'similar',
+      lgbtNote:"Essex Police area broadly at national average for LGBT hate crime. Chelmsford has a diverse city-centre population and active community organisations. The Breakfast Club and independent venues on Moulsham Street contribute to an inclusive culture.",
+      positives:['Burglary just 0.57× national — one of the lowest on this entire list','Vehicle crime falling sharply (0.42× national)','Chelmsford ranked 3rd safest major area in Essex'],
+      concerns:['Overall crime 18% above national — driven by city-level violence and shoplifting','Violence 1.27× national average','Drugs trending up (2.02× national) — city centre concentrated'],
+      source:'CrimeRate.co.uk (Chelmsford: 18% above national overall, burglary 0.57× national) / police.uk to Oct 2025' },
+    lifestyle:{ dogWalking:4, dogWalkingNotes:'Hylands Park (574 acres, Grade II listed) is exceptional. Central Park for town walks, and the Chelmer Navigation for river routes.', dining:4, diningNotes:'Good cathedral city food scene — independent restaurants, craft beer bars, weekly market. Better than most Essex towns.', shopping:4, shoppingNotes:'Bond Street, High Chelmer, and weekly market give solid coverage. Good independent and high street mix.', character:4, characterNotes:'Cathedral city status since 2012 — proper city feel at affordable prices. Good arts scene, excellent grammar schools.' },
+    recommendation:"Chelmsford is the standout value on the eastern arc. Property is notably cheaper than Hertfordshire equivalents. Crucially, burglary is just 0.57× the national average — exceptionally low. The elevated overall crime figure is driven by city-centre violence and drugs, concentrated around nightlife areas rather than residential streets. For day-to-day residential safety, particularly burglary, it outperforms most of the shortlist.",
+    pois:[{name:'Chelmsford Station',lat:51.7361,lng:0.4678,type:'transport',desc:'Greater Anglia to Liverpool Street. ~33 min, frequent.'},{name:'Hylands Park',lat:51.7033,lng:0.4369,type:'walk',desc:'574 acres of Grade II listed parkland. Outstanding for dogs.'},{name:'Chelmsford Cathedral',lat:51.7349,lng:0.4701,type:'culture',desc:'Cathedral city centre. Beautiful and historic.'},{name:'Central Park',lat:51.7327,lng:0.4700,type:'walk',desc:'Town centre park with riverside walks.'},{name:'Moulsham Street',lat:51.7320,lng:0.4670,type:'eat',desc:'Independent restaurant and cafe street. The best of Chelmsford.'}]
+  }
+];
+
+// ═══════════════════════════════════════════
+// STATE
+// ═══════════════════════════════════════════
+let state = { selected:'wgc', crossedOff:[], salary:115000, deposit:40000, terminal:'any', activeTab:'overview', notes:{}, visits:{}, customLocations:[] };
+let locations = [...BASE_LOCATIONS];
+let leafletMap = null, mapMarkers = [], mapInited = false;
+
+// ═══════════════════════════════════════════
+// STORAGE
+// ═══════════════════════════════════════════
+async function loadState() {
+  try {
+    const res = await window.storage.get('cf-v4');
+    if (res?.value) {
+      const saved = JSON.parse(res.value);
+      state = { ...state, ...saved };
+      if (state.customLocations?.length) locations = [...BASE_LOCATIONS, ...state.customLocations];
+    }
+  } catch(e) {}
+  applyStateToUI(); renderSidebar(); renderDetail(state.selected);
+}
+async function saveState() {
+  try { await window.storage.set('cf-v4', JSON.stringify(state)); } catch(e) {}
+}
+
+// ═══════════════════════════════════════════
+// AFFORDABILITY
+// ═══════════════════════════════════════════
+function getBudget() { return state.salary * 4.5 + state.deposit; }
+function getAff(loc) {
+  const b = getBudget(), mid = (loc.costs.buyLow + loc.costs.buyHigh) / 2;
+  if (mid <= b * 0.96) return 'comfortable';
+  if (loc.costs.buyLow <= b) return 'tight';
+  return 'over';
+}
+function affClass(a) { return {comfortable:'price-ok',tight:'price-warn',over:'price-over'}[a]; }
+function affIcon(a) { return {comfortable:'✅',tight:'⚠️',over:'❌'}[a]; }
+
+function getPipCls(loc) {
+  if (state.crossedOff.includes(loc.id)) return 'pip-dimmed';
+  if (getAff(loc) === 'over') return 'pip-red';
+  if (loc.baseStatus === 'future') return 'pip-slate';
+  const tm = state.terminal === 'any' || loc.commute.terminal === state.terminal;
+  if (!tm) return 'pip-slate';
+  return (getAff(loc) === 'tight' || loc.baseStatus === 'borderline') ? 'pip-amber' : 'pip-green';
+}
+
+// ═══════════════════════════════════════════
+// SIDEBAR — sorted by score
+// ═══════════════════════════════════════════
+function renderSidebar() {
+  const active = locations.filter(l => !state.crossedOff.includes(l.id));
+  const crossed = locations.filter(l => state.crossedOff.includes(l.id));
+
+  // Sort active by score descending
+  active.sort((a, b) => calculateScore(b).total - calculateScore(a).total);
+
+  function card(loc, isCrossed) {
+    const { total } = calculateScore(loc);
+    const tm = state.terminal === 'any' || loc.commute.terminal === state.terminal;
+    const dim = (!tm && !isCrossed) ? 'style="opacity:0.4"' : '';
+    const badgeCls = getScoreBadgeCls(total, isCrossed);
+    return `<div class="loc-card ${state.selected===loc.id?'selected':''} ${isCrossed?'crossed':''}" onclick="selectLoc('${loc.id}')" ${dim}>
+      <div class="loc-card-top">
+        <div class="status-pip ${getPipCls(loc)}"></div>
+        <div class="loc-name">${loc.name}</div>
+        <span class="score-badge ${badgeCls}">${total}%</span>
+      </div>
+      <div class="loc-county">${loc.county}</div>
+      <div class="loc-stats-row"><span class="loc-stat">🚂 <strong>${loc.commute.time}</strong></span><span class="loc-stat">${loc.commute.terminal}</span></div>
+      <button class="card-dismiss ${isCrossed?'dismiss-restore':'dismiss-cross'}" onclick="event.stopPropagation();toggleCross('${loc.id}')">${isCrossed?'↩':'✕'}</button>
+    </div>`;
+  }
+  let html = active.map(l => card(l, false)).join('');
+  if (crossed.length) {
+    html += `<div class="sidebar-section-label" style="margin-top:8px">Removed</div>`;
+    html += crossed.map(l => card(l, true)).join('');
+  }
+  document.getElementById('locationList').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════
+// DETAIL VIEW
+// ═══════════════════════════════════════════
+function renderDetail(id) {
+  state.selected = id;
+  const loc = locations.find(l => l.id === id);
+  if (!loc) return;
+
+  const aff = getAff(loc), budget = getBudget();
+  const { total: score, components } = calculateScore(loc);
+  const scoreColor = getHeaderScoreColor(score);
+
+  const sm = { recommended:{label:'✅ Recommended',cls:'badge-green'}, borderline:{label:'⚠️ Borderline',cls:'badge-amber'}, future:{label:'⏳ Future Tier',cls:'badge-slate'} };
+  const s = sm[loc.baseStatus] || sm.borderline;
+  const pc = affClass(aff);
+  const fmt = n => `£${Math.round(n/1000)}k`;
+  const fmtST = n => `~£${(n/1000).toFixed(1)}k`;
+  const stars = n => '★'.repeat(n)+'☆'.repeat(5-n);
+  const isCrossed = state.crossedOff.includes(id);
+  const notes = state.notes[id] || '';
+
+  const affBanners = {
+    comfortable: `<div class="afford-banner afford-green"><div class="afford-icon">✅</div><div><div class="afford-title">Comfortable at your budget (~${fmt(budget)})</div>Mid-range 3-bed semi is well within mortgage capacity.</div></div>`,
+    tight: `<div class="afford-banner afford-amber"><div class="afford-icon">⚠️</div><div><div class="afford-title">Tight but possible (~${fmt(budget)} budget)</div>You'll be chasing the lower end of the 3-bed market — achievable with patience.</div></div>`,
+    over: `<div class="afford-banner afford-red"><div class="afford-icon">❌</div><div><div class="afford-title">Over budget at current salary (~${fmt(budget)})</div>Great for renting and planning — becomes viable when income increases.</div></div>`
+  };
+
+  // Crime section HTML
+  function crimeSection(c) {
+    if (!c) return `<div class="crime-disclaimer">No crime data available for this location yet.</div>`;
+    const ovClass = c.overallVsNational <= -10 ? 'crime-val-good' : c.overallVsNational <= 5 ? 'crime-val-neutral' : c.overallVsNational <= 15 ? 'crime-val-concern' : 'crime-val-bad';
+    const bgClass = c.burglaryVsNational <= -20 ? 'crime-val-good' : c.burglaryVsNational <= 0 ? 'crime-val-neutral' : 'crime-val-concern';
+    const lgbtCls = { lower:'risk-lower', similar:'risk-similar', higher:'risk-higher' }[c.lgbtRisk];
+    const lgbtLabel = { lower:'Lower than urban average', similar:'Broadly similar to national', higher:'Higher than national average' }[c.lgbtRisk];
+    const ovStr = (c.overallVsNational >= 0 ? '+' : '') + c.overallVsNational + '% vs national';
+    const bgStr = (c.burglaryVsNational >= 0 ? '+' : '') + c.burglaryVsNational + '% vs national';
+    return `
+      <div class="crime-grid">
+        <div class="crime-metric">
+          <div class="crime-metric-label">Overall Crime</div>
+          <div class="crime-metric-value ${ovClass}">${ovStr}</div>
+          <div class="crime-metric-note">${c.overallVsNational < 0 ? 'Below' : 'Above'} the national average · ${c.force}</div>
+        </div>
+        <div class="crime-metric">
+          <div class="crime-metric-label">🏠 Burglary Rate</div>
+          <div class="crime-metric-value ${bgClass}">${bgStr}</div>
+          <div class="crime-metric-note">${c.burglaryVsNational < 0 ? 'Lower' : 'Higher'} than national average</div>
+        </div>
+        <div class="crime-metric">
+          <div class="crime-metric-label">🏳️‍🌈 LGBT+ Hate Crime Risk</div>
+          <div class="crime-metric-value"><span class="crime-risk-badge ${lgbtCls}">${lgbtLabel}</span></div>
+          <div class="crime-metric-note" style="margin-top:4px">${c.lgbtNote}</div>
+        </div>
+      </div>
+      <div class="crime-lists">
+        ${c.positives?.length ? `<div class="crime-list-box">
+          <div class="crime-list-title positives">✓ Safety positives</div>
+          ${c.positives.map(p => `<div class="crime-list-item"><span style="color:var(--green);flex-shrink:0">✓</span> ${p}</div>`).join('')}
+        </div>` : ''}
+        ${c.concerns?.length ? `<div class="crime-list-box">
+          <div class="crime-list-title concerns">⚠ Considerations</div>
+          ${c.concerns.map(p => `<div class="crime-list-item"><span style="color:var(--amber);flex-shrink:0">⚠</span> ${p}</div>`).join('')}
+        </div>` : ''}
+      </div>
+      <div class="crime-disclaimer">
+        <strong>Important caveats:</strong> Crime stats are from ${c.source}. LGBT+ hate crime is significantly under-reported nationally — Galop estimates 91% of incidents go unreported. Force-area figures are the smallest geographic unit publicly available for hate crime; neighbourhood-level variation within each town can be significant. Always verify current data at police.uk before making decisions.
+      </div>`;
+  }
+
+  document.getElementById('mainContent').innerHTML = `
+    <div class="loc-header">
+      <div class="loc-title-block">
+        <div class="loc-h1">${loc.name}</div>
+        <div class="loc-subtitle">${loc.county} · ${loc.commute.terminal} via ${loc.commute.line}</div>
+      </div>
+      <div class="loc-header-actions">
+        <div style="display:flex;gap:8px;align-items:flex-start">
+          <div class="header-score-wrap">
+            <div class="header-score-num" style="color:${scoreColor}">${score}%</div>
+            <div class="header-score-label">Match score</div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:6px">
+            <span class="status-badge ${s.cls}">${s.label}</span>
+            ${isCrossed ? `<button onclick="toggleCross('${loc.id}')" style="font-size:11px;padding:4px 10px;border:1px solid #aaa;border-radius:20px;cursor:pointer;background:white;color:#555">↩ Restore</button>` : ''}
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tabs">
+      <div class="tab ${state.activeTab==='overview'?'active':''}" onclick="switchTab('overview')">Overview</div>
+      <div class="tab ${state.activeTab==='map'?'active':''}" onclick="switchTab('map')">Map & POIs</div>
+      <div class="tab ${state.activeTab==='stats'?'active':''}" onclick="switchTab('stats')">Full Stats & Score</div>
+      <div class="tab ${state.activeTab==='notes'?'active':''}" onclick="switchTab('notes')">Notes & Visits</div>
+    </div>
+    <div class="panels-wrapper">
+
+      <!-- OVERVIEW -->
+      <div class="panel ${state.activeTab==='overview'?'active':''}" id="panel-overview">
+        ${isCrossed ? `<div class="crossed-banner">⊘ Removed from active shortlist. <span class="restore-link" onclick="toggleCross('${loc.id}')">Restore</span></div>` : ''}
+        ${affBanners[aff]}
+        <div class="rec-label">Our Assessment</div>
+        <div class="rec-box">${loc.recommendation}</div>
+        <div class="section-label">Key Figures</div>
+        <div class="key-stats">
+          <div class="kstat"><div class="kstat-icon">🚂</div><div class="kstat-label">Commute</div><div class="kstat-value">${loc.commute.time}</div><div class="kstat-detail">${loc.commute.terminal} · ${loc.commute.line}</div></div>
+          <div class="kstat"><div class="kstat-icon">🎫</div><div class="kstat-label">Season Ticket</div><div class="kstat-value">${fmtST(loc.seasonTicket.annual)}/yr</div><div class="kstat-detail">~£${Math.round(loc.seasonTicket.annual/12)}/mo approx.</div></div>
+          <div class="kstat"><div class="kstat-icon">🏠</div><div class="kstat-label">Buy (3-bed semi)</div><div class="kstat-value ${pc}">${fmt(loc.costs.buyLow)}–${fmt(loc.costs.buyHigh)}</div><div class="kstat-detail">${affIcon(aff)} ${aff} at your budget</div></div>
+          <div class="kstat"><div class="kstat-icon">🔑</div><div class="kstat-label">Rent (3-bed)</div><div class="kstat-value">£${(loc.costs.rentLow/1000).toFixed(1)}k–£${(loc.costs.rentHigh/1000).toFixed(1)}k</div><div class="kstat-detail">${loc.costs.rentHigh<=2000?'✅ Within budget':'⚠️ At/above budget'}</div></div>
+          ${loc.lastTrain ? (() => { const b = lastTrainBadge(loc); return `<div class="kstat" style="border-color:${b.bg}"><div class="kstat-icon">🌙</div><div class="kstat-label">Last Train Home</div><div class="kstat-value" style="color:${b.color};font-size:22px">${loc.lastTrain.departs}</div><div class="kstat-detail" style="display:flex;flex-direction:column;gap:3px"><span style="background:${b.bg};color:${b.color};padding:1px 7px;border-radius:10px;font-size:10px;font-weight:600;display:inline-block;width:fit-content">${b.label}</span><span style="margin-top:2px">from ${loc.commute.terminal}${b.isApprox?' · approx':''}</span></div></div>`; })() : '' }
+        </div>
+        <div class="section-label" style="margin-top:16px">Lifestyle</div>
+        <div class="lifestyle-grid">
+          <div class="litem"><div class="litem-top"><div class="litem-name">🐕 Dog Walking & Nature</div><div class="litem-stars">${stars(loc.lifestyle.dogWalking)}</div></div><div class="litem-desc">${loc.lifestyle.dogWalkingNotes}</div></div>
+          <div class="litem"><div class="litem-top"><div class="litem-name">🍽️ Food & Dining</div><div class="litem-stars">${stars(loc.lifestyle.dining)}</div></div><div class="litem-desc">${loc.lifestyle.diningNotes}</div></div>
+          <div class="litem"><div class="litem-top"><div class="litem-name">🛍️ Shopping & Amenities</div><div class="litem-stars">${stars(loc.lifestyle.shopping)}</div></div><div class="litem-desc">${loc.lifestyle.shoppingNotes}</div></div>
+          <div class="litem"><div class="litem-top"><div class="litem-name">✨ Character & Community</div><div class="litem-stars">${stars(loc.lifestyle.character)}</div></div><div class="litem-desc">${loc.lifestyle.characterNotes}</div></div>
+        </div>
+        <div class="section-label" style="margin-top:16px">Crime & Safety</div>
+        ${crimeSection(loc.crime)}
+      </div>
+
+      <!-- MAP -->
+      <div class="panel ${state.activeTab==='map'?'active':''}" id="panel-map">
+        <div id="map"></div>
+        <div class="poi-legend">
+          <div class="poi-legend-title">Points of Interest</div>
+          ${Object.entries(POI_ICONS).map(([t,i]) => `<div class="poi-type-item"><div class="poi-color-dot" style="background:${POI_COLORS[t]}"></div>${i} ${t.charAt(0).toUpperCase()+t.slice(1)}</div>`).join('')}
+        </div>
+      </div>
+
+      <!-- STATS & SCORE -->
+      <div class="panel ${state.activeTab==='stats'?'active':''}" id="panel-stats">
+
+        <div class="score-breakdown">
+          <div class="sb-header">
+            <span>Recommendation Score Breakdown</span>
+            <span class="sb-total" style="color:${scoreColor}">${score}%</span>
+          </div>
+          ${[
+            { label:'Affordability (30%)', score: components.aff, max: 30 },
+            { label:'Commute fit (25%)',   score: components.commute, max: 25 },
+            { label:'Lifestyle (20%)',     score: components.lifestyle, max: 20 },
+            { label:'Crime & safety (15%)',score: components.crime, max: 15 },
+            { label:'Status (10%)',        score: components.status, max: 10 }
+          ].map(r => `<div class="sb-row">
+            <div class="sb-label">${r.label}</div>
+            <div class="sb-bar-wrap"><div class="sb-bar" style="width:${Math.round(r.score/r.max*100)}%"></div></div>
+            <div class="sb-score">${r.score}/${r.max}</div>
+          </div>`).join('')}
+        </div>
+
+        <div class="stats-table-wrap"><table class="stats-table">
+          <thead><tr><th>Category</th><th>Details</th></tr></thead>
+          <tbody>
+            <tr class="stats-section-head"><td colspan="2">Commute</td></tr>
+            <tr><td>Commute Time</td><td><strong>${loc.commute.time}</strong> to ${loc.commute.terminal}</td></tr>
+            <tr><td>Train Line</td><td>${loc.commute.line}</td></tr>
+            <tr><td>Peak Frequency</td><td>${loc.commute.freq}</td></tr>
+            <tr><td>Annual Season Ticket</td><td><strong>~£${loc.seasonTicket.annual.toLocaleString()}/yr</strong> (~£${Math.round(loc.seasonTicket.annual/12)}/mo)<div class="stat-note">Approximate — verify on National Rail</div></td></tr>
+            ${loc.lastTrain ? (() => { const b = lastTrainBadge(loc); return `<tr><td>🌙 Last Train Home</td><td><strong>${loc.lastTrain.departs}</strong> from ${loc.commute.terminal} → arrives ~${loc.lastTrain.arrives}<div class="stat-note" style="margin-top:4px"><span style="background:${b.bg};color:${b.color};padding:1px 8px;border-radius:10px;font-size:10px;font-weight:600">${b.label}</span></div><div class="stat-note" style="margin-top:5px">${loc.lastTrain.note}</div></td></tr>`; })() : '' }
+            <tr class="stats-section-head"><td colspan="2">Property</td></tr>
+            <tr><td>3-Bed Semi (Buy)</td><td><span class="${pc}"><strong>${fmt(loc.costs.buyLow)} – ${fmt(loc.costs.buyHigh)}</strong></span><div class="stat-note">${affIcon(aff)} ${aff} at ~${fmt(budget)} budget (4.5× salary + deposit)</div></td></tr>
+            <tr><td>3-Bed House (Rent)</td><td><strong>£${loc.costs.rentLow.toLocaleString()} – £${loc.costs.rentHigh.toLocaleString()}/mo</strong></td></tr>
+            <tr class="stats-section-head"><td colspan="2">Crime & Safety</td></tr>
+            ${loc.crime ? `
+            <tr><td>Police Force Area</td><td>${loc.crime.force}</td></tr>
+            <tr><td>Overall Crime vs National</td><td><span class="${loc.crime.overallVsNational<=0?'price-ok':'price-warn'}">${(loc.crime.overallVsNational>=0?'+':'')+loc.crime.overallVsNational}%</span><div class="stat-note">${loc.crime.overallVsNational<0?'Below':'Above'} national average</div></td></tr>
+            <tr><td>Burglary vs National</td><td><span class="${loc.crime.burglaryVsNational<=0?'price-ok':'price-warn'}">${(loc.crime.burglaryVsNational>=0?'+':'')+loc.crime.burglaryVsNational}%</span><div class="stat-note">${loc.crime.burglaryVsNational<0?'Lower':'Higher'} than national average</div></td></tr>
+            <tr><td>LGBT+ Hate Crime Risk</td><td>${{'lower':'🟢 Lower than urban average','similar':'🟡 Broadly national average','higher':'🔴 Higher than national average'}[loc.crime.lgbtRisk]}<div class="stat-note">${loc.crime.lgbtNote}</div></td></tr>
+            <tr><td>Safety Positives</td><td>${(loc.crime.positives||[]).join(' · ') || '—'}</td></tr>
+            <tr><td>Considerations</td><td>${(loc.crime.concerns||[]).join(' · ') || 'No specific concerns noted'}</td></tr>
+            <tr><td>Data Source</td><td><div class="stat-note">${loc.crime.source}</div></td></tr>
+            ` : '<tr><td colspan="2" style="color:var(--text-muted)">No crime data loaded for this location.</td></tr>'}
+            <tr class="stats-section-head"><td colspan="2">Lifestyle</td></tr>
+            <tr><td>Dog Walking</td><td>${stars(loc.lifestyle.dogWalking)} — ${loc.lifestyle.dogWalkingNotes}</td></tr>
+            <tr><td>Dining & Cafes</td><td>${stars(loc.lifestyle.dining)} — ${loc.lifestyle.diningNotes}</td></tr>
+            <tr><td>Shopping</td><td>${stars(loc.lifestyle.shopping)} — ${loc.lifestyle.shoppingNotes}</td></tr>
+            <tr><td>Character</td><td>${stars(loc.lifestyle.character)} — ${loc.lifestyle.characterNotes}</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+
+      <!-- NOTES -->
+      <div class="panel ${state.activeTab==='notes'?'active':''}" id="panel-notes">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+          <div style="font-size:14px;font-weight:600">Your Notes on ${loc.name}</div>
+          <div style="font-size:12px;color:var(--text-muted)">Saved per location</div>
+        </div>
+        <textarea class="notes-textarea" id="notesTA" placeholder="Add your thoughts — viewings, areas you liked, concerns, things to investigate...">${notes}</textarea>
+        <div style="display:flex;gap:8px;margin-top:10px;align-items:center">
+          <button class="save-btn" onclick="saveNotes()">Save Notes</button>
+          <span style="font-size:12px;color:var(--text-muted)" id="saveConfirm"></span>
+        </div>
+        <div style="margin-top:24px">
+          <div class="section-label">Visit Log</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-bottom:8px">Record viewings, day trips, and first impressions</div>
+          <div class="visit-input-row">
+            <input type="date" class="visit-input" id="visitDate" style="max-width:150px" value="${new Date().toISOString().split('T')[0]}">
+            <input type="text" class="visit-input" id="visitNote" placeholder="What did you think? Viewings, areas explored, impressions...">
+            <button class="add-visit-btn" onclick="addVisit('${loc.id}')">Add</button>
+          </div>
+          <div class="visit-list" id="visitList">${renderVisits(loc.id)}</div>
+        </div>
+      </div>
+
+    </div>`;
+
+  if (state.activeTab === 'map') setTimeout(() => initOrUpdateMap(loc), 50);
+}
+
+function renderVisits(locId) {
+  const vs = state.visits[locId] || [];
+  if (!vs.length) return '<div style="font-size:13px;color:var(--text-light);padding:8px 0">No visits logged yet.</div>';
+  return vs.map((v,i) => `<div class="visit-item"><div class="visit-date">${v.date}</div><div class="visit-note-text">${v.note}</div><button class="remove-visit" onclick="removeVisit('${locId}',${i})">×</button></div>`).join('');
+}
+
+// ═══════════════════════════════════════════
+// MAP
+// ═══════════════════════════════════════════
+function initOrUpdateMap(loc) {
+  const el = document.getElementById('map');
+  if (!el) return;
+  if (!mapInited || !leafletMap) {
+    leafletMap = L.map('map').setView([loc.lat, loc.lng], 13);
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', { attribution:'© OpenStreetMap © CARTO', maxZoom:18 }).addTo(leafletMap);
+    mapInited = true;
+  } else {
+    leafletMap.setView([loc.lat, loc.lng], 13);
+  }
+  mapMarkers.forEach(m => leafletMap.removeLayer(m));
+  mapMarkers = [];
+  (loc.pois||[]).forEach(poi => {
+    const color = POI_COLORS[poi.type]||'#666', icon = POI_ICONS[poi.type]||'📍';
+    const m = L.marker([poi.lat,poi.lng],{icon:L.divIcon({html:`<div style="background:${color};color:white;width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15px;box-shadow:0 3px 8px rgba(0,0,0,0.3);border:2px solid white">${icon}</div>`,iconSize:[34,34],iconAnchor:[17,17],className:''})}).addTo(leafletMap);
+    m.bindPopup(`<b>${poi.name}</b><br><span style="font-size:12px;color:#666">${poi.desc}</span>`);
+    mapMarkers.push(m);
+  });
+  if (mapMarkers.length) leafletMap.fitBounds(L.featureGroup(mapMarkers).getBounds().pad(0.15));
+}
+
+// ═══════════════════════════════════════════
+// INTERACTIONS
+// ═══════════════════════════════════════════
+function selectLoc(id) { state.selected = id; state.activeTab = 'overview'; renderSidebar(); renderDetail(id); }
+
+function switchTab(tab) {
+  state.activeTab = tab;
+  document.querySelectorAll('.tab').forEach((t,i) => t.classList.toggle('active', ['overview','map','stats','notes'][i]===tab));
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  const p = document.getElementById('panel-'+tab);
+  if (p) { p.classList.add('active'); if (tab==='map') { const l=locations.find(x=>x.id===state.selected); if(l) setTimeout(()=>initOrUpdateMap(l),50); } }
+}
+
+function toggleCross(id) {
+  state.crossedOff = state.crossedOff.includes(id) ? state.crossedOff.filter(x=>x!==id) : [...state.crossedOff, id];
+  renderSidebar(); renderDetail(state.selected); saveState();
+}
+function setTerminal(btn) {
+  state.terminal = btn.dataset.terminal;
+  document.querySelectorAll('.term-btn').forEach(b => b.classList.toggle('active', b===btn));
+  renderSidebar(); renderDetail(state.selected); saveState();
+}
+function saveNotes() {
+  state.notes[state.selected] = document.getElementById('notesTA')?.value||'';
+  const el = document.getElementById('saveConfirm');
+  if (el) { el.textContent='Saved ✓'; setTimeout(()=>el.textContent='',2000); }
+  saveState();
+}
+function addVisit(locId) {
+  const d = document.getElementById('visitDate')?.value||'';
+  const n = document.getElementById('visitNote')?.value?.trim()||'';
+  if (!n) return;
+  if (!state.visits[locId]) state.visits[locId]=[];
+  state.visits[locId].unshift({date:d,note:n});
+  document.getElementById('visitNote').value='';
+  const list = document.getElementById('visitList');
+  if (list) list.innerHTML = renderVisits(locId);
+  saveState();
+}
+function removeVisit(locId,idx) {
+  state.visits[locId]?.splice(idx,1);
+  const list=document.getElementById('visitList');
+  if (list) list.innerHTML=renderVisits(locId);
+  saveState();
+}
+
+// ═══════════════════════════════════════════
+// SALARY / DEPOSIT
+// ═══════════════════════════════════════════
+function applyStateToUI() {
+  const sl=document.getElementById('salarySlider'), di=document.getElementById('depositInput');
+  if (sl) sl.value=state.salary;
+  if (di) di.value=Math.round(state.deposit/1000);
+  updateSalaryDisplay();
+}
+function updateSalaryDisplay() {
+  const m=state.salary*4.5, t=m+state.deposit;
+  document.getElementById('salaryDisplay').textContent=`£${Math.round(state.salary/1000)}k`;
+  document.getElementById('mortgageDisplay').textContent=`↳ ~£${Math.round(t/1000)}k buying power`;
+}
+document.getElementById('salarySlider').addEventListener('input', e => {
+  state.salary=+e.target.value; updateSalaryDisplay(); renderSidebar(); renderDetail(state.selected); saveState();
+});
+document.getElementById('depositInput').addEventListener('input', e => {
+  state.deposit=(+e.target.value||0)*1000; updateSalaryDisplay(); renderSidebar(); renderDetail(state.selected); saveState();
+});
+
+// ═══════════════════════════════════════════
+// AI SEARCH MODAL
+// ═══════════════════════════════════════════
+let modalPhase='idle', previewData=null, stepTimer=null;
+
+function setModalState(phase) {
+  modalPhase=phase;
+  ['idle','loading','preview','error'].forEach(p => document.getElementById(`modal-${p}`)?.classList.toggle('hidden',p!==phase));
+  if (phase==='idle') setTimeout(()=>document.getElementById('townSearchInput')?.focus(),80);
+}
+function openAddModal() { document.getElementById('addModal').classList.add('open'); previewData=null; setModalState('idle'); }
+function closeAddModal() { document.getElementById('addModal').classList.remove('open'); if (stepTimer) clearInterval(stepTimer); }
+function fillAndSearch(town) { document.getElementById('townSearchInput').value=town; triggerAISearch(); }
+document.getElementById('addModal').addEventListener('click',e=>{ if(e.target===document.getElementById('addModal')) closeAddModal(); });
+
+async function triggerAISearch() {
+  const input=document.getElementById('townSearchInput');
+  const town=input?.value?.trim();
+  if (!town) { input?.focus(); return; }
+  document.getElementById('searchingName').textContent=town;
+  setModalState('loading');
+  const steps=['step-prices','step-commute','step-ticket','step-crime','step-rec'];
+  let i=0;
+  stepTimer=setInterval(()=>{
+    if(i>0) document.getElementById(steps[i-1])?.classList.add('done');
+    if(i<steps.length) document.getElementById(steps[i])?.classList.add('active');
+    i++; if(i>steps.length) clearInterval(stepTimer);
+  },700);
+  try {
+    const data=await fetchWithAI(town);
+    clearInterval(stepTimer);
+    steps.forEach(s=>{document.getElementById(s)?.classList.remove('active'); document.getElementById(s)?.classList.add('done');});
+    previewData={...data, id:data.name.toLowerCase().replace(/[^a-z0-9]/g,'_')+'_'+Date.now()};
+    document.getElementById('preview-inner').innerHTML=renderPreview(previewData);
+    setTimeout(()=>setModalState('preview'),350);
+  } catch(err) {
+    clearInterval(stepTimer);
+    document.getElementById('error-msg').textContent=err.message||'Something went wrong. Try again.';
+    setModalState('error');
+  }
+}
+
+async function fetchWithAI(townName) {
+  const prompt = `You are researching "${townName}" as a London commuter town for Adam and Simon, a same-sex couple relocating from Norwich. They have a dog named Scarlet, want good green space, a welcoming LGBT+ community, good food scene, 2-3 bed house, and safety matters to them. Current salary £115k, buying power ~£557k.
+
+Use web search to find current 2025/2026 data. Return ONLY raw JSON — absolutely no markdown, no backticks, no explanation:
+
+{
+  "name": "Official town name",
+  "county": "County or borough",
+  "lat": 51.5,
+  "lng": -0.1,
+  "baseStatus": "recommended",
+  "commute": { "time": "35 min", "timeMin": 35, "terminal": "King's Cross", "line": "Train operator", "freq": "Every X min peak" },
+  "seasonTicket": { "annual": 4500 },
+  "costs": { "buyLow": 380000, "buyHigh": 460000, "rentLow": 1600, "rentHigh": 1900 },
+  "lastTrain": { "departs": "23:31", "arrives": "00:09", "note": "Brief note on the service — operator, line, and what the departure time means practically for a night out" },
+  "crime": {
+    "force": "Police force name",
+    "overallVsNational": -10,
+    "burglaryVsNational": -15,
+    "lgbtRisk": "lower",
+    "lgbtNote": "Brief note on LGBT+ hate crime risk and community in this area",
+    "positives": ["Safety positive 1", "Safety positive 2"],
+    "concerns": ["Any specific concern"],
+    "source": "CrimeRate.co.uk / police.uk data [year]"
+  },
+  "lifestyle": {
+    "dogWalking": 4, "dogWalkingNotes": "specific parks and walks",
+    "dining": 3, "diningNotes": "food scene description",
+    "shopping": 3, "shoppingNotes": "shopping description",
+    "character": 4, "characterNotes": "town character"
+  },
+  "recommendation": "2-3 sentences covering commute, property value, safety, LGBT+ welcome, and dog walking for Scarlet specifically",
+  "pois": [
+    {"name": "Station", "lat": 51.5, "lng": -0.1, "type": "transport", "desc": "service details"},
+    {"name": "Park or walk", "lat": 51.5, "lng": -0.1, "type": "walk", "desc": "details"},
+    {"name": "Cafe or restaurant", "lat": 51.5, "lng": -0.1, "type": "eat", "desc": "details"},
+    {"name": "Shopping area", "lat": 51.5, "lng": -0.1, "type": "shop", "desc": "details"},
+    {"name": "Landmark", "lat": 51.5, "lng": -0.1, "type": "culture", "desc": "details"}
+  ]
+}
+
+Rules:
+- baseStatus: "recommended" (commute ≤45 min AND semi £300-520k) | "borderline" (commute 40-55 or price £500-650k) | "future" (price >£650k or commute >55 min)
+- terminal: King's Cross | Paddington | Liverpool Street | Euston | Marylebone | Waterloo | Victoria | London Bridge
+- lastTrain.departs: actual last departure time from the London terminal on weekday evenings (prefix with ~ if approximate). Times after midnight should be shown as e.g. "00:46" not "12:46am"
+- crime.overallVsNational and burglaryVsNational: % vs national average (negative=safer)
+- crime.lgbtRisk: "lower" | "similar" | "higher"
+- all lat/lng must be accurate UK coordinates
+- Return raw JSON only`;
+
+  const resp = await fetch('https://api.anthropic.com/v1/messages',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({
+      model:'claude-sonnet-4-20250514',
+      max_tokens:2000,
+      tools:[{type:'web_search_20250305',name:'web_search'}],
+      messages:[{role:'user',content:prompt}]
+    })
+  });
+  if (!resp.ok) { const e=await resp.json().catch(()=>({})); throw new Error(e.error?.message||`API error ${resp.status}`); }
+  const data = await resp.json();
+  const fullText = (data.content||[]).map(b => b.type==='text'?b.text:'').join('');
+  const match = fullText.match(/\{[\s\S]*\}/);
+  if (!match) throw new Error(`No data found for "${townName}". Check spelling or try a nearby town.`);
+  let parsed;
+  try { parsed=JSON.parse(match[0]); } catch(e) { throw new Error(`Couldn't parse data for "${townName}". Please try again.`); }
+  if (!parsed.name||!parsed.commute||!parsed.costs) throw new Error(`Incomplete data for "${townName}". Try a different name.`);
+  return parsed;
+}
+
+function renderPreview(data) {
+  const sm={recommended:{label:'✅ Recommended',cls:'badge-green'},borderline:{label:'⚠️ Borderline',cls:'badge-amber'},future:{label:'⏳ Future Tier',cls:'badge-slate'}};
+  const s=sm[data.baseStatus]||sm.borderline;
+  const stars=n=>'★'.repeat(n)+'☆'.repeat(5-n);
+  const fmt=n=>`£${Math.round(n/1000)}k`;
+  const { total: score } = calculateScore(data);
+  const scoreColor = getHeaderScoreColor(score);
+  const lgbtCls = {'lower':'risk-lower','similar':'risk-similar','higher':'risk-higher'}[data.crime?.lgbtRisk||'similar'];
+  const lgbtLabel = {'lower':'Lower than urban avg','similar':'National average','higher':'Above average'}[data.crime?.lgbtRisk||'similar'];
+  return `
+    <div class="preview-location-header">
+      <div>
+        <div class="preview-name">${data.name}</div>
+        <div class="preview-county">${data.county}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px">
+        <span class="status-badge ${s.cls}">${s.label}</span>
+        <div style="font-family:'Fraunces',serif;font-size:20px;font-weight:600;color:${scoreColor}">${score}% match</div>
+      </div>
+    </div>
+    <div class="preview-grid">
+      <div class="preview-stat-card"><div class="psc-label">🚂 Commute</div><div class="psc-value">${data.commute.time} → ${data.commute.terminal}</div><div class="psc-sub">${data.commute.line}</div></div>
+      <div class="preview-stat-card"><div class="psc-label">🎫 Season Ticket</div><div class="psc-value">~£${data.seasonTicket.annual.toLocaleString()}/yr</div></div>
+      <div class="preview-stat-card"><div class="psc-label">🏠 Buy (3-bed semi)</div><div class="psc-value">${fmt(data.costs.buyLow)} – ${fmt(data.costs.buyHigh)}</div></div>
+      <div class="preview-stat-card"><div class="psc-label">🔒 Crime vs national</div><div class="psc-value">${data.crime?(data.crime.overallVsNational>=0?'+':'')+data.crime.overallVsNational+'%':'Unknown'}</div><div class="psc-sub"><span class="crime-risk-badge ${lgbtCls}" style="font-size:10px;padding:2px 7px">${lgbtLabel} LGBT risk</span></div></div>
+    </div>
+    <div class="lifestyle-mini">
+      <div class="lm-item"><div class="lm-label">🐕 Walks</div><div class="lm-stars">${stars(data.lifestyle.dogWalking)}</div></div>
+      <div class="lm-item"><div class="lm-label">🍽️ Dining</div><div class="lm-stars">${stars(data.lifestyle.dining)}</div></div>
+      <div class="lm-item"><div class="lm-label">🛍️ Shopping</div><div class="lm-stars">${stars(data.lifestyle.shopping)}</div></div>
+      <div class="lm-item"><div class="lm-label">✨ Character</div><div class="lm-stars">${stars(data.lifestyle.character)}</div></div>
+    </div>
+    <div class="preview-rec-text">${data.recommendation}</div>
+    <div class="preview-actions">
+      <button class="btn-discard" onclick="setModalState('idle')">↩ Try different town</button>
+      <button class="btn-confirm" onclick="confirmAdd()">Add to Shortlist ✓</button>
+    </div>`;
+}
+
+function confirmAdd() {
+  if (!previewData) return;
+  locations.push(previewData);
+  state.customLocations.push(previewData);
+  closeAddModal();
+  renderSidebar();
+  selectLoc(previewData.id);
+  saveState();
+}
+
+// ═══════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════
+window.addEventListener('DOMContentLoaded', loadState);
+</script>
+</body>
+</html>
