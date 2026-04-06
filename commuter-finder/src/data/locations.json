@@ -1,0 +1,1760 @@
+[
+  {
+    "id": "reading",
+    "name": "Reading",
+    "county": "Berkshire",
+    "lat": 51.4584,
+    "lng": -0.9714,
+    "commute": {
+      "time": "28 min",
+      "timeMin": 28,
+      "terminal": "Paddington",
+      "line": "Elizabeth Line / GWR",
+      "freq": "Every 5–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 5100
+    },
+    "costs": {
+      "buyLow": 390000,
+      "buyHigh": 450000,
+      "rentLow": 1700,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "~01:45",
+      "arrives": "~02:10",
+      "note": "GWR from Paddington. Very late last service — one of the best on the arc for nights out."
+    },
+    "crime": {
+      "force": "Thames Valley Police",
+      "overallVsNational": 8,
+      "burglaryVsNational": -5,
+      "lgbtRisk": "similar",
+      "lgbtNote": "Thames Valley is a large urban force covering Oxford, Reading and Slough. Sexual orientation hate crimes broadly in line with the national urban average. Reading has a visible, active LGBT+ scene centred around Kings Road and the LGBTQ+ venue The Purple Turtle.",
+      "positives": [
+        "Burglary below national average",
+        "Thames Valley well-resourced force",
+        "Reading has active LGBT+ community and venues"
+      ],
+      "concerns": [
+        "City-level ASB in some town centre areas",
+        "Shoplifting rising nationally"
+      ],
+      "source": "CrimeRate.co.uk / police.uk data to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Thames Path, Forbury Gardens, Prospect Park — excellent riverside and urban green space.",
+      "dining": 4,
+      "diningNotes": "Strong independent food scene; vibrant café culture across the town centre and Caversham.",
+      "shopping": 4,
+      "shoppingNotes": "The Oracle and Broad Street Mall for high street; Kings Road for independents.",
+      "character": 4,
+      "characterNotes": "Vibrant university city with a young population, good nightlife, and a growing creative community."
+    },
+    "recommendation": "Reading is the strongest value proposition on the western arc. An excellent Elizabeth Line service puts Paddington in 28 minutes. The town has genuine city-level amenities, Thames-side walks for Scarlet, and property is notably cheaper than comparable Hertfordshire towns. Its university city character means a visible LGBT+ scene and generally welcoming culture.",
+    "pois": [
+      {
+        "name": "Reading Station",
+        "lat": 51.4583,
+        "lng": -0.9714,
+        "type": "transport",
+        "desc": "Elizabeth Line & GWR. Paddington in 28 min."
+      },
+      {
+        "name": "Thames Path",
+        "lat": 51.455,
+        "lng": -0.972,
+        "type": "walk",
+        "desc": "Superb riverside walks — excellent for dogs all year."
+      },
+      {
+        "name": "Forbury Gardens",
+        "lat": 51.4553,
+        "lng": -0.9643,
+        "type": "walk",
+        "desc": "Lovely town-centre park with Victorian lion statue."
+      },
+      {
+        "name": "Prospect Park",
+        "lat": 51.4497,
+        "lng": -0.991,
+        "type": "walk",
+        "desc": "Large park with woodland, lake and open fields."
+      },
+      {
+        "name": "The Oracle / Riverside",
+        "lat": 51.4551,
+        "lng": -0.9705,
+        "type": "eat",
+        "desc": "Main waterside restaurant and bar strip."
+      },
+      {
+        "name": "Kings Road Cafes",
+        "lat": 51.457,
+        "lng": -0.9687,
+        "type": "eat",
+        "desc": "Heart of Reading's independent food and LGBT+ scene."
+      }
+    ]
+  },
+  {
+    "id": "highwycombe",
+    "name": "High Wycombe",
+    "county": "Buckinghamshire",
+    "lat": 51.6286,
+    "lng": -0.7482,
+    "commute": {
+      "time": "28 min",
+      "timeMin": 28,
+      "terminal": "Marylebone",
+      "line": "Chiltern Railways",
+      "freq": "Every 15–30 min peak"
+    },
+    "seasonTicket": {
+      "annual": 4500
+    },
+    "costs": {
+      "buyLow": 375000,
+      "buyHigh": 440000,
+      "rentLow": 1600,
+      "rentHigh": 1800
+    },
+    "lastTrain": {
+      "departs": "~23:15",
+      "arrives": "~23:43",
+      "note": "Chiltern Railways from Marylebone. Reasonable — allows a proper evening but not a very late night. Verify on National Rail."
+    },
+    "crime": {
+      "force": "Thames Valley Police",
+      "overallVsNational": 0,
+      "burglaryVsNational": -12,
+      "lgbtRisk": "similar",
+      "lgbtNote": "Thames Valley force area — rates broadly at national average. High Wycombe has a diverse population but limited visible LGBT+ specific scene; nearest active scene is in Reading or London.",
+      "positives": [
+        "Burglary 12% below national average",
+        "Vehicle crime falling"
+      ],
+      "concerns": [
+        "Some ASB in town centre",
+        "Urban diversity means varied neighbourhood character"
+      ],
+      "source": "CrimeRate.co.uk / police.uk data to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Outstanding — right on the Chiltern Hills AONB. West Wycombe Park, Rye Park, and miles of countryside walks.",
+      "dining": 3,
+      "diningNotes": "Mixed in town; better in surrounding villages. Marlow (15 min drive) has excellent restaurants.",
+      "shopping": 3,
+      "shoppingNotes": "Eden Shopping Centre covers basics. Town centre is functional rather than inspiring.",
+      "character": 3,
+      "characterNotes": "Mixed — the surrounding hills are beautiful but the town centre has some challenges. Good schools nearby."
+    },
+    "recommendation": "High Wycombe has one of the fastest commutes on the list and the most affordable property. The real draw is countryside access — you're on the Chiltern Hills AONB, which is outstanding for Scarlet. The town centre itself requires realistic expectations. Crime is broadly at or below national average, with burglary meaningfully lower.",
+    "pois": [
+      {
+        "name": "High Wycombe Station",
+        "lat": 51.6278,
+        "lng": -0.748,
+        "type": "transport",
+        "desc": "Chiltern Railways to Marylebone. 28 min."
+      },
+      {
+        "name": "Rye Park",
+        "lat": 51.6241,
+        "lng": -0.7547,
+        "type": "walk",
+        "desc": "Large park with river — good for daily dog walks."
+      },
+      {
+        "name": "West Wycombe Park (NT)",
+        "lat": 51.6436,
+        "lng": -0.8116,
+        "type": "walk",
+        "desc": "NT landscape park. Beautiful hillside walks."
+      },
+      {
+        "name": "Chilterns AONB",
+        "lat": 51.67,
+        "lng": -0.8,
+        "type": "walk",
+        "desc": "Hundreds of miles of AONB trails from the doorstep."
+      },
+      {
+        "name": "Marlow",
+        "lat": 51.5706,
+        "lng": -0.7769,
+        "type": "eat",
+        "desc": "15 min drive — excellent restaurants and Thames walks."
+      }
+    ]
+  },
+  {
+    "id": "berkhamsted",
+    "name": "Berkhamsted",
+    "county": "Hertfordshire",
+    "lat": 51.7608,
+    "lng": -0.5622,
+    "commute": {
+      "time": "35 min",
+      "timeMin": 35,
+      "terminal": "Euston",
+      "line": "London Northwestern Railway",
+      "freq": "Every 20–30 min peak"
+    },
+    "seasonTicket": {
+      "annual": 4200
+    },
+    "costs": {
+      "buyLow": 600000,
+      "buyHigh": 780000,
+      "rentLow": 1800,
+      "rentHigh": 2200
+    },
+    "lastTrain": {
+      "departs": "~01:15",
+      "arrives": "~01:50",
+      "note": "London Northwestern from Euston. Same corridor as Hemel — very late service. Verify on National Rail as timings vary."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -22,
+      "burglaryVsNational": -25,
+      "lgbtRisk": "lower",
+      "lgbtNote": "One of the safest areas within an already below-average force. Very low crime across all categories. Affluent, stable community. Nearest visible LGBT+ scene in Hemel or St Albans.",
+      "positives": [
+        "Among the safest towns in Hertfordshire",
+        "Burglary 25% below national average",
+        "Very low ASB and violence"
+      ],
+      "concerns": [
+        "Limited local LGBT+ scene (closest in St Albans, 12 miles)"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Exceptional — Ashridge Estate (NT, 5,000 acres), Grand Union Canal, Berkhamsted Common. Some of the best dog walking in Hertfordshire.",
+      "dining": 4,
+      "diningNotes": "Strong independent high street with excellent restaurants, delis, and cafes.",
+      "shopping": 4,
+      "shoppingNotes": "Great independent high street — everything you need without a shopping centre.",
+      "character": 5,
+      "characterNotes": "One of Hertfordshire's most desirable market towns. Canal, castle ruins, Chilterns — beautiful and sought-after."
+    },
+    "recommendation": "Berkhamsted is genuinely one of the most desirable towns in Hertfordshire with some of the lowest crime on the entire list. The problem is property averages £600–780k+ for a 3-bed, firmly placing it in a future tier. Worth revisiting when London salaries are confirmed.",
+    "pois": [
+      {
+        "name": "Berkhamsted Station",
+        "lat": 51.7623,
+        "lng": -0.565,
+        "type": "transport",
+        "desc": "London Northwestern to Euston. ~35 min."
+      },
+      {
+        "name": "Berkhamsted Castle",
+        "lat": 51.7616,
+        "lng": -0.5603,
+        "type": "culture",
+        "desc": "Ruined Norman castle — atmospheric, free access."
+      },
+      {
+        "name": "Grand Union Canal",
+        "lat": 51.7608,
+        "lng": -0.5622,
+        "type": "walk",
+        "desc": "Canal through the town centre — beautiful towpath walks."
+      },
+      {
+        "name": "Ashridge Estate (NT)",
+        "lat": 51.8,
+        "lng": -0.55,
+        "type": "walk",
+        "desc": "5,000 acres of ancient woodland. Outstanding for dogs."
+      },
+      {
+        "name": "High Street",
+        "lat": 51.7613,
+        "lng": -0.5591,
+        "type": "eat",
+        "desc": "Excellent independent restaurants and delis."
+      }
+    ]
+  },
+  {
+    "id": "wgc",
+    "name": "Welwyn Garden City",
+    "county": "Hertfordshire",
+    "lat": 51.8007,
+    "lng": -0.2039,
+    "commute": {
+      "time": "30 min",
+      "timeMin": 30,
+      "terminal": "King's Cross",
+      "line": "Great Northern",
+      "freq": "Every 10–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 3400
+    },
+    "costs": {
+      "buyLow": 430000,
+      "buyHigh": 490000,
+      "rentLow": 1700,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "23:06",
+      "arrives": "23:36",
+      "note": "Great Northern from King's Cross. Leaves at 23:06 — you need to be at King's Cross by then. That means leaving a restaurant or bar by about 22:40."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -14,
+      "burglaryVsNational": -14,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Hertfordshire overall is below national average for all hate crime categories. WGC is a planned garden city with a diverse, generally inclusive community. Limited local LGBT+ nightlife but broadly welcoming.",
+      "positives": [
+        "14% below national crime average",
+        "Low burglary for a town this size",
+        "Planned garden city = well-lit, well-designed streets"
+      ],
+      "concerns": [],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Panshanger Park (1,000 acres of river meadows and woodland), Sherrardspark Wood, and green corridors throughout the town. Excellent.",
+      "dining": 3,
+      "diningNotes": "Adequate rather than exciting. Restaurant scene is growing but limited independent options.",
+      "shopping": 3,
+      "shoppingNotes": "Howard Centre and town centre cover essentials including John Lewis partnership store.",
+      "character": 3,
+      "characterNotes": "Britain's second garden city — tree-lined boulevards and planned green space. Pleasant but more modern than Letchworth."
+    },
+    "recommendation": "WGC has the most reliable commute on the list — a consistent 30 minutes to King's Cross. Crime is 14% below national average across the board. Panshanger Park is brilliant for Scarlet. This is the choice if commute reliability and safety combined matter most.",
+    "pois": [
+      {
+        "name": "WGC Station",
+        "lat": 51.8007,
+        "lng": -0.2039,
+        "type": "transport",
+        "desc": "Great Northern to King's Cross. Consistent 30 min."
+      },
+      {
+        "name": "Panshanger Park",
+        "lat": 51.8152,
+        "lng": -0.1677,
+        "type": "walk",
+        "desc": "1,000 acres of river meadows. Outstanding for dogs."
+      },
+      {
+        "name": "Sherrardspark Wood",
+        "lat": 51.8178,
+        "lng": -0.1958,
+        "type": "walk",
+        "desc": "Ancient woodland in the heart of WGC."
+      },
+      {
+        "name": "Howard Centre",
+        "lat": 51.8017,
+        "lng": -0.2061,
+        "type": "shop",
+        "desc": "Main shopping including John Lewis partnership."
+      },
+      {
+        "name": "Campus West",
+        "lat": 51.8025,
+        "lng": -0.208,
+        "type": "culture",
+        "desc": "Theatre, cinema, and events venue."
+      }
+    ]
+  },
+  {
+    "id": "hitchin",
+    "name": "Hitchin",
+    "county": "Hertfordshire",
+    "lat": 51.9492,
+    "lng": -0.2834,
+    "commute": {
+      "time": "33–42 min",
+      "timeMin": 38,
+      "terminal": "King's Cross",
+      "line": "Great Northern / Thameslink",
+      "freq": "Every 15–20 min (fastest: 33 min)"
+    },
+    "seasonTicket": {
+      "annual": 4700
+    },
+    "costs": {
+      "buyLow": 450000,
+      "buyHigh": 510000,
+      "rentLow": 1500,
+      "rentHigh": 1800
+    },
+    "lastTrain": {
+      "departs": "~23:31",
+      "arrives": "~00:04",
+      "note": "Great Northern/Thameslink from King's Cross. Hitchin is on the Letchworth corridor — last service around 23:31 gets you home just after midnight. Good for a late evening."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -14,
+      "burglaryVsNational": -14,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Hertfordshire below national average for LGBT hate crime. Hitchin has a strong, inclusive community feel and regularly features in 'best places to live' surveys for quality of life. Small-town environment but known for its welcoming character.",
+      "positives": [
+        "14% below national crime average",
+        "Burglary below national average",
+        "Strong community identity and safety reputation"
+      ],
+      "concerns": [
+        "Buying budget is tight — competition for lower-priced properties"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Priory Park with river Hiz walks, lavender fields nearby in summer, and beautiful surrounding Hertfordshire countryside. Superb.",
+      "dining": 5,
+      "diningNotes": "One of Hertfordshire's very best independent food scenes — great cafes, restaurants, and a wonderful weekly market.",
+      "shopping": 4,
+      "shoppingNotes": "Excellent independent high street with regular market, good delis, and characterful shops.",
+      "character": 5,
+      "characterNotes": "Regularly ranked one of the happiest places to live in the UK. Cobbled streets, Gothic church, lavender fields, strong community."
+    },
+    "recommendation": "Hitchin is the best lifestyle option on this list by a clear margin. It also scores well on safety — 14% below national crime average. The buying budget is tight at £115k (3-bed semis from £450k) but the fastest trains do King's Cross in 33 minutes. And your family are nearby. If you can find the right property, Hitchin is where you'll want to be.",
+    "pois": [
+      {
+        "name": "Hitchin Station",
+        "lat": 51.9479,
+        "lng": -0.2781,
+        "type": "transport",
+        "desc": "Great Northern to King's Cross. Fastest 33 min."
+      },
+      {
+        "name": "Priory Park",
+        "lat": 51.9463,
+        "lng": -0.2851,
+        "type": "walk",
+        "desc": "Beautiful park with River Hiz walks — excellent for dogs."
+      },
+      {
+        "name": "St Mary's & Bancroft",
+        "lat": 51.9499,
+        "lng": -0.282,
+        "type": "culture",
+        "desc": "The iconic Gothic church and cobbled Bancroft — heart of Hitchin."
+      },
+      {
+        "name": "Market Place",
+        "lat": 51.95,
+        "lng": -0.2827,
+        "type": "shop",
+        "desc": "Weekly market and brilliant independent shops."
+      },
+      {
+        "name": "Hitchin Lavender",
+        "lat": 51.982,
+        "lng": -0.3066,
+        "type": "walk",
+        "desc": "Stunning in summer — lavender fields and countryside walks."
+      }
+    ]
+  },
+  {
+    "id": "letchworth",
+    "name": "Letchworth Garden City",
+    "county": "Hertfordshire",
+    "lat": 51.9799,
+    "lng": -0.2293,
+    "commute": {
+      "time": "29–46 min",
+      "timeMin": 40,
+      "terminal": "King's Cross",
+      "line": "Great Northern / Thameslink",
+      "freq": "Every 15–30 min (fast services ~30 min)"
+    },
+    "seasonTicket": {
+      "annual": 5000
+    },
+    "costs": {
+      "buyLow": 440000,
+      "buyHigh": 530000,
+      "rentLow": 1400,
+      "rentHigh": 1700
+    },
+    "lastTrain": {
+      "departs": "23:31",
+      "arrives": "00:09",
+      "note": "Great Northern from King's Cross. Confirmed last departure 23:31 — you're home just after midnight, which gives a solid evening in London."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -14,
+      "burglaryVsNational": -14,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Hertfordshire below national average for hate crime. Letchworth as a garden city has a long history of progressive values and community spirit — the original garden city movement was ahead of its time in many social respects. Small but welcoming community.",
+      "positives": [
+        "14% below national crime average",
+        "Low burglary",
+        "Garden city design = well-lit planned streets with good sightlines"
+      ],
+      "concerns": [
+        "Limited local LGBT+ nightlife (Hitchin 5 miles, better options there)"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Norton Common (66 acres of ancient woodland next to the station), Broadway Gardens, Standalone Farm. Outstanding.",
+      "dining": 3,
+      "diningNotes": "Improving steadily. Hitchin (10 min, 5 miles) for a better night out.",
+      "shopping": 3,
+      "shoppingNotes": "Good Morrisons and growing independent scene. Functional and improving.",
+      "character": 4,
+      "characterNotes": "World's first garden city (1903) — unique Arts & Crafts heritage, green corridors, strong community identity."
+    },
+    "recommendation": "Letchworth is the best value for money of the Hertfordshire towns. Crime is 14% below national average. Norton Common is 66 acres of ancient woodland right next to the station for Scarlet. Rents are the most affordable on the arc. The garden city character is genuinely distinctive and the progressive community values suit you well.",
+    "pois": [
+      {
+        "name": "Letchworth Station",
+        "lat": 51.9799,
+        "lng": -0.2293,
+        "type": "transport",
+        "desc": "Great Northern to King's Cross. Fast trains under 30 min."
+      },
+      {
+        "name": "Norton Common",
+        "lat": 51.984,
+        "lng": -0.2402,
+        "type": "walk",
+        "desc": "66 acres of ancient woodland. Outstanding for dogs."
+      },
+      {
+        "name": "Broadway Gardens",
+        "lat": 51.9768,
+        "lng": -0.2289,
+        "type": "walk",
+        "desc": "Beautiful formal gardens — classic garden city design."
+      },
+      {
+        "name": "Standalone Farm",
+        "lat": 51.9975,
+        "lng": -0.2231,
+        "type": "walk",
+        "desc": "Working farm with countryside walks — great for dogs."
+      },
+      {
+        "name": "Garden City Heritage Museum",
+        "lat": 51.9782,
+        "lng": -0.2305,
+        "type": "culture",
+        "desc": "Celebrating the garden city movement."
+      }
+    ]
+  },
+  {
+    "id": "bishopsstortford",
+    "name": "Bishop's Stortford",
+    "county": "Hertfordshire / Essex border",
+    "lat": 51.8667,
+    "lng": 0.1649,
+    "commute": {
+      "time": "45–50 min",
+      "timeMin": 47,
+      "terminal": "Liverpool Street",
+      "line": "Greater Anglia",
+      "freq": "Every 20–30 min peak"
+    },
+    "seasonTicket": {
+      "annual": 5700
+    },
+    "costs": {
+      "buyLow": 460000,
+      "buyHigh": 510000,
+      "rentLow": 1700,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "~23:20",
+      "arrives": "~00:10",
+      "note": "Greater Anglia Cambridge line from Liverpool Street. Late enough for a good night — Cambridge line runs late but verify exact time on National Rail."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -14,
+      "burglaryVsNational": -14,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Falls within Hertfordshire Constabulary area — below national average for hate crime. Attractive market town with a broadly welcoming community. Limited local LGBT+ nightlife but safe and inclusive day-to-day environment.",
+      "positives": [
+        "Below national average crime",
+        "Low burglary",
+        "Safe, pleasant market town environment"
+      ],
+      "concerns": [
+        "Commute averages 47–50 min — over your 45 min target",
+        "Limited local LGBT+ scene"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "River Stort navigation, Grange Paddocks, and surrounding Essex/Hertfordshire countryside. Very good for dog walks.",
+      "dining": 4,
+      "diningNotes": "Good independent food scene for a market town — solid restaurants, cafes, and an attractive high street.",
+      "shopping": 4,
+      "shoppingNotes": "Excellent independent high street with good variety. One of Essex/Herts' better town centres.",
+      "character": 4,
+      "characterNotes": "Attractive market town with real character. Historic centre, pleasant riverside. Stansted Airport very close."
+    },
+    "recommendation": "Bishop's Stortford is a lovely, safe market town that sits just above your 45-minute commute threshold (~47–50 min to Liverpool Street). Below-average crime across the board. If your jobs point toward Liverpool Street, this becomes considerably more compelling — otherwise the commute pushes it to borderline status.",
+    "pois": [
+      {
+        "name": "Bishop's Stortford Station",
+        "lat": 51.8687,
+        "lng": 0.1592,
+        "type": "transport",
+        "desc": "Greater Anglia to Liverpool Street. ~45–50 min."
+      },
+      {
+        "name": "River Stort Navigation",
+        "lat": 51.8702,
+        "lng": 0.1638,
+        "type": "walk",
+        "desc": "Beautiful towpath walks — excellent for dogs."
+      },
+      {
+        "name": "Grange Paddocks",
+        "lat": 51.864,
+        "lng": 0.1632,
+        "type": "walk",
+        "desc": "Park and open space."
+      },
+      {
+        "name": "High Street",
+        "lat": 51.8686,
+        "lng": 0.1648,
+        "type": "eat",
+        "desc": "Good independent restaurants and cafes."
+      }
+    ]
+  },
+  {
+    "id": "brentwood",
+    "name": "Brentwood",
+    "county": "Essex",
+    "lat": 51.6205,
+    "lng": 0.3072,
+    "commute": {
+      "time": "35 min",
+      "timeMin": 35,
+      "terminal": "Liverpool Street",
+      "line": "Elizabeth Line / Greater Anglia",
+      "freq": "Every 10–15 min peak (Elizabeth Line)"
+    },
+    "seasonTicket": {
+      "annual": 4900
+    },
+    "costs": {
+      "buyLow": 500000,
+      "buyHigh": 570000,
+      "rentLow": 1700,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "~00:30",
+      "arrives": "~01:05",
+      "note": "Elizabeth Line from Liverpool Street runs very late — around 00:30 on weekdays. Outstanding for late nights. One of the best on the arc."
+    },
+    "crime": {
+      "force": "Essex Police",
+      "overallVsNational": -10,
+      "burglaryVsNational": -36,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Brentwood is one of the safer Essex areas with crime below national average. Affluent suburban character means lower-than-average hate crime rates. Limited local LGBT+ scene but welcoming community.",
+      "positives": [
+        "10% below national crime rate",
+        "Burglary fallen 40% in 3 years — now 36% below national",
+        "Among the safer areas in Essex"
+      ],
+      "concerns": [
+        "Vehicle crime still 1.66× national average",
+        "Drugs trending upward",
+        "Buying budget tight at current salary"
+      ],
+      "source": "CrimeRate.co.uk (Brentwood: 10% below national, burglary index 0.64×) / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Weald Country Park (500 acres) and Warley Country Park are excellent for dogs — some of the best Essex countryside.",
+      "dining": 3,
+      "diningNotes": "Good high street with a mix of independent and chain restaurants. Above average for Essex.",
+      "shopping": 3,
+      "shoppingNotes": "High Street has improved significantly — decent mix of independent and high street brands.",
+      "character": 3,
+      "characterNotes": "Pleasant, aspirational Essex commuter town. A decent, well-connected suburb with good green space and schools."
+    },
+    "recommendation": "Brentwood has a genuinely excellent Elizabeth Line commute (35 min to Liverpool Street, very high frequency) and is 10% below national crime average with burglary falling fast. The challenge is affordability at £115k — 3-bed semis averaging £500k+. Excellent for renting while building deposit, and very compelling once London salaries arrive.",
+    "pois": [
+      {
+        "name": "Brentwood Station",
+        "lat": 51.6185,
+        "lng": 0.3002,
+        "type": "transport",
+        "desc": "Elizabeth Line to Liverpool Street. 35 min, excellent frequency."
+      },
+      {
+        "name": "Weald Country Park",
+        "lat": 51.6326,
+        "lng": 0.2825,
+        "type": "walk",
+        "desc": "500 acres of parkland and woodland. Exceptional dog walking."
+      },
+      {
+        "name": "Warley Country Park",
+        "lat": 51.5985,
+        "lng": 0.3174,
+        "type": "walk",
+        "desc": "More parkland — varied walking routes."
+      },
+      {
+        "name": "Brentwood High Street",
+        "lat": 51.6199,
+        "lng": 0.3049,
+        "type": "eat",
+        "desc": "Improving independent restaurant and cafe scene."
+      }
+    ]
+  },
+  {
+    "id": "chelmsford",
+    "name": "Chelmsford",
+    "county": "Essex",
+    "lat": 51.7361,
+    "lng": 0.4678,
+    "commute": {
+      "time": "33 min",
+      "timeMin": 33,
+      "terminal": "Liverpool Street",
+      "line": "Greater Anglia",
+      "freq": "Every 10–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 6200
+    },
+    "costs": {
+      "buyLow": 345000,
+      "buyHigh": 450000,
+      "rentLow": 1500,
+      "rentHigh": 1800
+    },
+    "lastTrain": {
+      "departs": "00:46",
+      "arrives": "01:19",
+      "note": "Greater Anglia from Liverpool Street. Confirmed last departure 00:46 — the latest on the entire list. You can stay in London until last orders and still get home."
+    },
+    "crime": {
+      "force": "Essex Police",
+      "overallVsNational": 18,
+      "burglaryVsNational": -43,
+      "lgbtRisk": "similar",
+      "lgbtNote": "Essex Police area broadly at national average for LGBT hate crime. Chelmsford has a diverse city-centre population and active community organisations. The Breakfast Club and independent venues on Moulsham Street contribute to an inclusive culture.",
+      "positives": [
+        "Burglary just 0.57× national — one of the lowest on this entire list",
+        "Vehicle crime falling sharply (0.42× national)",
+        "Chelmsford ranked 3rd safest major area in Essex"
+      ],
+      "concerns": [
+        "Overall crime 18% above national — driven by city-level violence and shoplifting",
+        "Violence 1.27× national average",
+        "Drugs trending up (2.02× national) — city centre concentrated"
+      ],
+      "source": "CrimeRate.co.uk (Chelmsford: 18% above national overall, burglary 0.57× national) / police.uk to Oct 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Hylands Park (574 acres, Grade II listed) is exceptional. Central Park for town walks, and the Chelmer Navigation for river routes.",
+      "dining": 4,
+      "diningNotes": "Good cathedral city food scene — independent restaurants, craft beer bars, weekly market. Better than most Essex towns.",
+      "shopping": 4,
+      "shoppingNotes": "Bond Street, High Chelmer, and weekly market give solid coverage. Good independent and high street mix.",
+      "character": 4,
+      "characterNotes": "Cathedral city status since 2012 — proper city feel at affordable prices. Good arts scene, excellent grammar schools."
+    },
+    "recommendation": "Chelmsford is the standout value on the eastern arc. Property is notably cheaper than Hertfordshire equivalents. Crucially, burglary is just 0.57× the national average — exceptionally low. The elevated overall crime figure is driven by city-centre violence and drugs, concentrated around nightlife areas rather than residential streets. For day-to-day residential safety, particularly burglary, it outperforms most of the shortlist.",
+    "pois": [
+      {
+        "name": "Chelmsford Station",
+        "lat": 51.7361,
+        "lng": 0.4678,
+        "type": "transport",
+        "desc": "Greater Anglia to Liverpool Street. ~33 min, frequent."
+      },
+      {
+        "name": "Hylands Park",
+        "lat": 51.7033,
+        "lng": 0.4369,
+        "type": "walk",
+        "desc": "574 acres of Grade II listed parkland. Outstanding for dogs."
+      },
+      {
+        "name": "Chelmsford Cathedral",
+        "lat": 51.7349,
+        "lng": 0.4701,
+        "type": "culture",
+        "desc": "Cathedral city centre. Beautiful and historic."
+      },
+      {
+        "name": "Central Park",
+        "lat": 51.7327,
+        "lng": 0.47,
+        "type": "walk",
+        "desc": "Town centre park with riverside walks."
+      },
+      {
+        "name": "Moulsham Street",
+        "lat": 51.732,
+        "lng": 0.467,
+        "type": "eat",
+        "desc": "Independent restaurant and cafe street. The best of Chelmsford."
+      }
+    ]
+  },
+  {
+    "id": "hertford",
+    "name": "Hertford",
+    "county": "Hertfordshire",
+    "lat": 51.7958,
+    "lng": -0.0775,
+    "commute": {
+      "time": "43–50 min",
+      "timeMin": 46,
+      "terminal": "King's Cross",
+      "line": "Great Northern (Hertford North)",
+      "freq": "Every 20–30 min peak"
+    },
+    "seasonTicket": {
+      "annual": 4800
+    },
+    "costs": {
+      "buyLow": 430000,
+      "buyHigh": 510000,
+      "rentLow": 1600,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "~23:20",
+      "arrives": "~00:10",
+      "note": "Great Northern from King's Cross to Hertford North. Leaves around 23:20 — reasonable for an evening in London. Note: there is also a service via Liverpool Street to Hertford East (slower). Verify on National Rail."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -14,
+      "burglaryVsNational": -14,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Hertfordshire Constabulary area — below national average for all hate crime categories. Hertford is a pleasant market town with a broadly welcoming community. Limited local LGBT+ nightlife but a friendly and inclusive day-to-day environment. Closer proximity to larger scenes in London.",
+      "positives": [
+        "14% below national crime average",
+        "Low burglary for a market town",
+        "Safe, historic town centre with good community feel"
+      ],
+      "concerns": [
+        "Town centre parking and traffic can be frustrating",
+        "Some ASB around the train station late evenings"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Exceptional — the River Lea Navigation towpath runs through the town, Hartham Common (riverside meadows), and beautiful surrounding Hertfordshire countryside. One of the best dog-walking towns on the list.",
+      "dining": 4,
+      "diningNotes": "Excellent independent food scene for a market town — good restaurants, delis, and a characterful high street. The Old Cross pub area is particularly good.",
+      "shopping": 3,
+      "shoppingNotes": "Solid independent high street covering essentials and more. Not a shopping destination but well-stocked for daily needs.",
+      "character": 5,
+      "characterNotes": "Genuinely one of Hertfordshire's most charming towns. Medieval castle ruins, river walks, a historic market town atmosphere, and a strong community. Arguably better character than anywhere else on the list at this price."
+    },
+    "recommendation": "Hertford is a hidden gem on the list — a genuinely beautiful historic market town with river walks, castle ruins, and an independent food scene. Crime is 14% below national average. The commute (43–50 min to King's Cross) is longer than ideal but the quality of life is exceptional for the price. If the commute is workable, this is one of the strongest all-round options.",
+    "pois": [
+      {
+        "name": "Hertford North Station",
+        "lat": 51.8025,
+        "lng": -0.0834,
+        "type": "transport",
+        "desc": "Great Northern to King's Cross. ~43–50 min."
+      },
+      {
+        "name": "Hertford Castle",
+        "lat": 51.7968,
+        "lng": -0.0737,
+        "type": "culture",
+        "desc": "Norman motte-and-bailey castle ruins — atmospheric and free to visit."
+      },
+      {
+        "name": "River Lea Navigation",
+        "lat": 51.795,
+        "lng": -0.0765,
+        "type": "walk",
+        "desc": "Beautiful towpath walks through the town and into open countryside — perfect for dogs."
+      },
+      {
+        "name": "Hartham Common",
+        "lat": 51.7975,
+        "lng": -0.082,
+        "type": "walk",
+        "desc": "Riverside meadows — open, flat, excellent for off-lead dog walking."
+      },
+      {
+        "name": "Old Cross & High Street",
+        "lat": 51.796,
+        "lng": -0.075,
+        "type": "eat",
+        "desc": "The best of Hertford's independent restaurants, pubs and cafes."
+      }
+    ]
+  },
+  {
+    "id": "hatfield",
+    "name": "Hatfield",
+    "county": "Hertfordshire",
+    "lat": 51.7626,
+    "lng": -0.2282,
+    "commute": {
+      "time": "27 min",
+      "timeMin": 27,
+      "terminal": "King's Cross",
+      "line": "Great Northern",
+      "freq": "Every 10–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 3200
+    },
+    "costs": {
+      "buyLow": 320000,
+      "buyHigh": 400000,
+      "rentLow": 1400,
+      "rentHigh": 1700
+    },
+    "lastTrain": {
+      "departs": "~23:40",
+      "arrives": "~00:07",
+      "note": "Great Northern from King's Cross. Hatfield is on the main Welwyn/WGC corridor — late trains run regularly. Good flexibility for evenings in London. Verify on National Rail."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -10,
+      "burglaryVsNational": -12,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Hertfordshire Constabulary area — below national average. Hatfield has a large university population (University of Hertfordshire) which brings younger, more diverse demographic and a broadly inclusive culture. De Havilland campus contributes to a generally welcoming environment.",
+      "positives": [
+        "10% below national crime average",
+        "University presence brings diverse, inclusive demographics",
+        "Burglary below national average"
+      ],
+      "concerns": [
+        "Town centre areas (Galleria end) can feel impersonal",
+        "Some variation between new town and Old Hatfield neighbourhoods"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Hatfield Park (700 acres of historic grounds surrounding Hatfield House) is extraordinary for dog walking — one of the best parks in Hertfordshire. Excellent for Scarlet.",
+      "dining": 3,
+      "diningNotes": "Improving, particularly Old Hatfield. The Galleria is more chain-focused but Old Town has better independent options. University town brings some good cafes.",
+      "shopping": 3,
+      "shoppingNotes": "The Galleria retail park covers most needs. Old Hatfield high street for independents. Functional and accessible.",
+      "character": 3,
+      "characterNotes": "Mixed — the new town areas are functional but Old Hatfield is genuinely charming with Tudor buildings including Hatfield House. The contrast is stark but manageable with the right neighbourhood choice."
+    },
+    "recommendation": "Hatfield's headline numbers are hard to argue with: a 27-minute fast commute to King's Cross, one of the cheapest season tickets on the arc (~£3,200/yr), and property starting well below your buying power. Hatfield Park's 700 acres of historic grounds is outstanding for Scarlet. Old Hatfield has real charm and the university brings an inclusive, younger demographic. The best pure value-per-commute-minute on the shortlist.",
+    "pois": [
+      {
+        "name": "Hatfield Station",
+        "lat": 51.763,
+        "lng": -0.221,
+        "type": "transport",
+        "desc": "Great Northern to King's Cross. 27 min — exceptional value."
+      },
+      {
+        "name": "Hatfield Park",
+        "lat": 51.7637,
+        "lng": -0.2067,
+        "type": "walk",
+        "desc": "700-acre historic grounds. Outstanding dog walking — one of the best in Hertfordshire."
+      },
+      {
+        "name": "Hatfield House",
+        "lat": 51.7634,
+        "lng": -0.2064,
+        "type": "culture",
+        "desc": "Jacobean mansion in grounds — stunning architecture and history."
+      },
+      {
+        "name": "Old Hatfield",
+        "lat": 51.7648,
+        "lng": -0.2299,
+        "type": "eat",
+        "desc": "Tudor Old Town with independent pubs, cafes and character."
+      },
+      {
+        "name": "De Havilland Aircraft Museum",
+        "lat": 51.7227,
+        "lng": -0.2362,
+        "type": "culture",
+        "desc": "Excellent aviation museum — Comet, Vulcan and more."
+      }
+    ]
+  },
+  {
+    "id": "stalbans",
+    "name": "St Albans",
+    "county": "Hertfordshire",
+    "lat": 51.75,
+    "lng": -0.3415,
+    "commute": {
+      "time": "20 min",
+      "timeMin": 20,
+      "terminal": "St Pancras",
+      "line": "Thameslink",
+      "freq": "Every 5–10 min peak"
+    },
+    "seasonTicket": {
+      "annual": 3600
+    },
+    "costs": {
+      "buyLow": 600000,
+      "buyHigh": 780000,
+      "rentLow": 1900,
+      "rentHigh": 2400
+    },
+    "lastTrain": {
+      "departs": "~00:30",
+      "arrives": "~00:50",
+      "note": "Thameslink from St Pancras International. Very late last service — one of the best on the arc for flexibility. St Albans City station is on the main Thameslink corridor so late trains run consistently."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -18,
+      "burglaryVsNational": -20,
+      "lgbtRisk": "lower",
+      "lgbtNote": "One of the safest and most affluent towns in Hertfordshire. Hertfordshire Constabulary well below national average for all hate crime categories. St Albans has an active, visible LGBT+ community — particularly around the city centre and Catherine Street area — unusually strong for a town this size outside London.",
+      "positives": [
+        "18% below national crime average",
+        "Burglary 20% below national",
+        "Active LGBT+ community for a non-London city",
+        "Among the safest cities in England"
+      ],
+      "concerns": [
+        "Property is significantly over budget at current salary",
+        "Premium prices across all housing types"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Verulamium Park (100 acres with lake, running alongside Roman city walls) is outstanding. Heartwood Forest (National Forest, 850 acres) is nearby. Excellent all year round for Scarlet.",
+      "dining": 5,
+      "diningNotes": "One of the best independent food scenes outside London — Catherine Street, Verulam Road, and the market area. Outstanding restaurants, delis, wine bars, and cafes. A genuine food destination.",
+      "shopping": 4,
+      "shoppingNotes": "Excellent independent high street, weekly market (Wednesdays and Saturdays), and Christopher Place. Avoids the soullessness of retail parks.",
+      "character": 5,
+      "characterNotes": "Cathedral city with Roman ruins, a historic market, cobbled streets, and a thriving arts and food scene. Repeatedly ranked among the best places to live in the UK. Vibrant, welcoming, beautiful."
+    },
+    "recommendation": "St Albans has the best quality of life of any location on this shortlist — a 20-minute Thameslink commute, extraordinary food and lifestyle, Verulamium Park for Scarlet, low crime, and an unusually active LGBT+ community for a city this size. The sole obstacle is property: 3-bed semis average £600–780k+, placing it firmly in the future tier. This is the one to come back to when London salaries are confirmed.",
+    "pois": [
+      {
+        "name": "St Albans City Station",
+        "lat": 51.7491,
+        "lng": -0.3365,
+        "type": "transport",
+        "desc": "Thameslink to St Pancras. Just 20 min — outstanding commute."
+      },
+      {
+        "name": "Verulamium Park",
+        "lat": 51.7469,
+        "lng": -0.3614,
+        "type": "walk",
+        "desc": "100-acre park with Roman walls and lake — superb for dogs all year."
+      },
+      {
+        "name": "St Albans Cathedral",
+        "lat": 51.7469,
+        "lng": -0.3508,
+        "type": "culture",
+        "desc": "Magnificent Norman cathedral — the oldest in England on a continuous site."
+      },
+      {
+        "name": "Catherine Street",
+        "lat": 51.7511,
+        "lng": -0.3398,
+        "type": "eat",
+        "desc": "The heart of St Albans' outstanding independent food and wine scene."
+      },
+      {
+        "name": "Heartwood Forest",
+        "lat": 51.7689,
+        "lng": -0.3044,
+        "type": "walk",
+        "desc": "850-acre National Forest — exceptional dog walking and woodland trails."
+      }
+    ]
+  },
+  {
+    "id": "chesham",
+    "name": "Chesham",
+    "county": "Buckinghamshire",
+    "lat": 51.7044,
+    "lng": -0.6077,
+    "commute": {
+      "time": "~60 min",
+      "timeMin": 60,
+      "terminal": "Baker Street",
+      "line": "London Underground (Metropolitan line)",
+      "freq": "Every 15–20 min peak"
+    },
+    "seasonTicket": {
+      "annual": 3200
+    },
+    "costs": {
+      "buyLow": 460000,
+      "buyHigh": 560000,
+      "rentLow": 1500,
+      "rentHigh": 1800
+    },
+    "lastTrain": {
+      "departs": "~23:30",
+      "arrives": "~00:30",
+      "note": "Metropolitan line from Baker Street. Last tube around 23:30 from Baker Street — reasonable for an evening out but check TfL for current last service times. No overnight service on the Met line."
+    },
+    "crime": {
+      "force": "Thames Valley Police",
+      "overallVsNational": -15,
+      "burglaryVsNational": -20,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Thames Valley Police area — below national average for hate crime. Chesham is a quiet, affluent market town in the Chilterns. Broadly welcoming and inclusive community. Nearest visible LGBT+ scene is in nearby Amersham or further into London.",
+      "positives": [
+        "15% below national crime average",
+        "Very low burglary",
+        "Quiet, safe Chilterns market town"
+      ],
+      "concerns": [
+        "60-minute commute exceeds your target",
+        "End-of-line tube (slow, surface-level)",
+        "No direct access to major London rail terminals"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Exceptional Chilterns AONB access right from the town. The Chess Valley Walk (River Chess) is beautiful. Magnificent countryside walks in every direction — arguably the best dog-walking access of any town on this list.",
+      "dining": 3,
+      "diningNotes": "Good independent high street for a market town. Better options in nearby Amersham (10 min). Not a foodie destination in its own right.",
+      "shopping": 3,
+      "shoppingNotes": "High street covers basics. Small independent scene. Amersham Old Town nearby for a more characterful alternative.",
+      "character": 4,
+      "characterNotes": "Charming Chilterns market town with a strong community identity. The setting in the Chess Valley is beautiful. Rural character, slower pace — suits those wanting to escape the commuter belt feel."
+    },
+    "recommendation": "Chesham is the most rural and scenic option on the list — a proper Chilterns market town with the River Chess and outstanding AONB dog walking for Scarlet. The critical constraint is the 60-minute Metropolitan line commute (surface tube, not fast mainline rail). This makes it borderline for a daily commute. If one partner works from home regularly, it becomes much more compelling.",
+    "pois": [
+      {
+        "name": "Chesham Station",
+        "lat": 51.7051,
+        "lng": -0.6098,
+        "type": "transport",
+        "desc": "Metropolitan line — end of line. Baker Street in ~60 min."
+      },
+      {
+        "name": "Chess Valley Walk",
+        "lat": 51.706,
+        "lng": -0.601,
+        "type": "walk",
+        "desc": "Beautiful river valley walk following the River Chess — excellent for dogs."
+      },
+      {
+        "name": "Lowndes Park",
+        "lat": 51.7058,
+        "lng": -0.6053,
+        "type": "walk",
+        "desc": "Town centre park with river — good for daily walks."
+      },
+      {
+        "name": "Chilterns AONB",
+        "lat": 51.69,
+        "lng": -0.62,
+        "type": "walk",
+        "desc": "Outstanding Area of Natural Beauty access from the doorstep."
+      },
+      {
+        "name": "Chesham High Street",
+        "lat": 51.705,
+        "lng": -0.6072,
+        "type": "eat",
+        "desc": "Independent market town high street."
+      }
+    ]
+  },
+  {
+    "id": "watford",
+    "name": "Watford",
+    "county": "Hertfordshire",
+    "lat": 51.6566,
+    "lng": -0.3963,
+    "commute": {
+      "time": "17–20 min",
+      "timeMin": 18,
+      "terminal": "Euston",
+      "line": "London Northwestern Railway",
+      "freq": "Every 10–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 2900
+    },
+    "costs": {
+      "buyLow": 450000,
+      "buyHigh": 560000,
+      "rentLow": 1700,
+      "rentHigh": 2000
+    },
+    "lastTrain": {
+      "departs": "~01:20",
+      "arrives": "~01:38",
+      "note": "London Northwestern from Euston. Very late last service — the second-fastest commute on the arc with one of the latest last trains. Excellent flexibility for late evenings in London."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": 5,
+      "burglaryVsNational": -10,
+      "lgbtRisk": "similar",
+      "lgbtNote": "Hertfordshire Constabulary area but Watford is the most urban Hertfordshire town — larger population brings crime closer to national average. Watford has a visible and active LGBT+ scene including the Cassio pub and various venues around the town centre. More LGBT+ visibility than most Hertfordshire towns.",
+      "positives": [
+        "Burglary 10% below national despite urban size",
+        "Active LGBT+ scene — unusual for Hertfordshire",
+        "Well-policed, well-resourced town"
+      ],
+      "concerns": [
+        "Overall crime slightly above national — driven by town-centre ASB and shoplifting",
+        "More urban feel than other Hertfordshire options",
+        "Property prices towards top of budget"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Cassiobury Park (190 acres with River Gade) is excellent and very accessible from most neighbourhoods. Whippendell Wood (150 acres of ancient woodland) is outstanding for dogs.",
+      "dining": 4,
+      "diningNotes": "Good and improving food scene — a mix of independent and chain restaurants. The High Street and Market Street area have solid options. Better than most Hertfordshire towns.",
+      "shopping": 5,
+      "shoppingNotes": "Atria Watford (formerly intu) is one of the best regional shopping centres outside London — John Lewis, M&S, and a strong independent offer. Excellent.",
+      "character": 3,
+      "characterNotes": "A proper town with real energy — more urban and diverse than other Hertfordshire options. Less picturesque but more vibrant. Good arts scene at Watford Colosseum and Pump House."
+    },
+    "recommendation": "Watford has the shortest mainline commute on this entire list — just 17–20 minutes to Euston with one of the cheapest season tickets (~£2,900/yr). Cassiobury Park and Whippendell Wood are excellent for Scarlet. Unusually for Hertfordshire, Watford has a visible LGBT+ scene. The trade-off is a slightly above-national crime rate driven by urban-centre activity, and property prices that sit at the top of your comfortable range.",
+    "pois": [
+      {
+        "name": "Watford Junction Station",
+        "lat": 51.6631,
+        "lng": -0.3965,
+        "type": "transport",
+        "desc": "London Northwestern to Euston. Just 17–20 min — fastest mainline commute on the list."
+      },
+      {
+        "name": "Cassiobury Park",
+        "lat": 51.6603,
+        "lng": -0.4142,
+        "type": "walk",
+        "desc": "190-acre park with River Gade — excellent for dogs, busy and social."
+      },
+      {
+        "name": "Whippendell Wood",
+        "lat": 51.6675,
+        "lng": -0.4229,
+        "type": "walk",
+        "desc": "150 acres of ancient woodland — outstanding off-lead dog walking."
+      },
+      {
+        "name": "Atria Watford",
+        "lat": 51.6558,
+        "lng": -0.3962,
+        "type": "shop",
+        "desc": "Major shopping centre — one of the best outside London."
+      },
+      {
+        "name": "Market Street & High Street",
+        "lat": 51.6555,
+        "lng": -0.3955,
+        "type": "eat",
+        "desc": "Town centre restaurants, cafes and independent food scene."
+      }
+    ]
+  },
+  {
+    "id": "borehamwood",
+    "name": "Borehamwood",
+    "county": "Hertfordshire",
+    "lat": 51.6576,
+    "lng": -0.2726,
+    "commute": {
+      "time": "22–26 min",
+      "timeMin": 23,
+      "terminal": "St Pancras",
+      "line": "Thameslink (Elstree & Borehamwood)",
+      "freq": "Every 10–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 2700
+    },
+    "costs": {
+      "buyLow": 420000,
+      "buyHigh": 510000,
+      "rentLow": 1600,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "~00:20",
+      "arrives": "~00:43",
+      "note": "Thameslink from St Pancras/Farringdon through to Elstree & Borehamwood. Very late last train — Thameslink runs a late-night service. Excellent flexibility for evenings in London."
+    },
+    "crime": {
+      "force": "Hertfordshire Constabulary",
+      "overallVsNational": -12,
+      "burglaryVsNational": -15,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Hertfordshire Constabulary area — below national average. Borehamwood has a large and diverse Jewish community and media/entertainment industry population, which contributes to a broadly inclusive and cosmopolitan culture for a Hertfordshire suburb. More diverse than most towns on this list.",
+      "positives": [
+        "12% below national crime average",
+        "Burglary 15% below national",
+        "Diverse community — more cosmopolitan than typical Hertfordshire suburbs"
+      ],
+      "concerns": [
+        "Town centre feels functional rather than characterful",
+        "Limited independent food scene in the town centre itself"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 3,
+      "dogWalkingNotes": "Allum Lane Open Space and Scratchwood Open Space (adjacent to M1) are the main options — workable for daily walks but nothing exceptional in town. Scratch Wood and Moat Mount are better options just north.",
+      "dining": 3,
+      "diningNotes": "Shenley Road has a diverse range of food options reflecting the community — particularly strong for kosher and Jewish cuisine. Not a foodie destination but with interesting variety.",
+      "shopping": 3,
+      "shoppingNotes": "Town centre shopping covers essentials. The Boulevard retail park and a functional high street. Brent Cross (large shopping centre) is just 15 min drive.",
+      "character": 3,
+      "characterNotes": "Home to Elstree Studios (The Crown, EastEnders, Big Brother were filmed here). More cosmopolitan than its Hertfordshire neighbours due to diverse demographics. Functional suburb but with an interesting creative/media heritage."
+    },
+    "recommendation": "Borehamwood's headline figures are exceptional: a 22-minute Thameslink to St Pancras with the cheapest season ticket on the entire list at ~£2,700/yr. Crime is 12% below national average and the diverse, cosmopolitan community is notably more inclusive than typical Hertfordshire suburbs. Property is comfortably within budget. The honest trade-off is a functional rather than beautiful town centre — but the commute and cost make it one of the most compelling financial propositions on this shortlist.",
+    "pois": [
+      {
+        "name": "Elstree & Borehamwood Station",
+        "lat": 51.6576,
+        "lng": -0.2726,
+        "type": "transport",
+        "desc": "Thameslink to St Pancras/Farringdon. 22–26 min — exceptional value."
+      },
+      {
+        "name": "Allum Lane Open Space",
+        "lat": 51.6631,
+        "lng": -0.2848,
+        "type": "walk",
+        "desc": "Local open space — main town walk for dogs."
+      },
+      {
+        "name": "Scratchwood Open Space",
+        "lat": 51.6518,
+        "lng": -0.2672,
+        "type": "walk",
+        "desc": "Woodland and open space adjacent to the town."
+      },
+      {
+        "name": "Elstree Studios",
+        "lat": 51.6576,
+        "lng": -0.2803,
+        "type": "culture",
+        "desc": "Historic studios — The Crown, EastEnders and countless films made here."
+      },
+      {
+        "name": "Shenley Road",
+        "lat": 51.6561,
+        "lng": -0.2738,
+        "type": "eat",
+        "desc": "Diverse high street with varied food reflecting the cosmopolitan community."
+      }
+    ]
+  },
+  {
+    "id": "shenfield",
+    "name": "Shenfield",
+    "county": "Essex",
+    "lat": 51.6255,
+    "lng": 0.3283,
+    "commute": {
+      "time": "35 min",
+      "timeMin": 35,
+      "terminal": "Liverpool Street",
+      "line": "Elizabeth Line",
+      "freq": "Every 5–10 min peak"
+    },
+    "seasonTicket": {
+      "annual": 4100
+    },
+    "costs": {
+      "buyLow": 440000,
+      "buyHigh": 520000,
+      "rentLow": 1500,
+      "rentHigh": 1800
+    },
+    "lastTrain": {
+      "departs": "~00:30",
+      "arrives": "~01:05",
+      "note": "Elizabeth Line from Liverpool Street runs very late — trains continue through well past midnight on weekdays. Outstanding for late evenings. One of the best on the arc."
+    },
+    "crime": {
+      "force": "Essex Police",
+      "overallVsNational": -12,
+      "burglaryVsNational": -18,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Essex Police area but Shenfield sits in one of the safer, more affluent parts of the county. Crime well below the Essex average and below national levels. Broadly welcoming community. Limited local LGBT+ scene but an inclusive, safe environment day-to-day.",
+      "positives": [
+        "12% below national crime average",
+        "Burglary 18% below national — one of the safer Essex options",
+        "Affluent, low-crime commuter village feel"
+      ],
+      "concerns": [
+        "Limited evening entertainment in the village itself",
+        "Elizabeth Line can be very busy westbound in peak hours"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 4,
+      "dogWalkingNotes": "Thorndon Country Park (550 acres of ancient deer park and woodland) is outstanding — one of the best dog-walking parks in Essex, 10 minutes away. The village green and surrounding lanes are great for daily walks.",
+      "dining": 3,
+      "diningNotes": "Good quality independent cafes and restaurants on the high street, plus excellent options at nearby Ingatestone and Brentwood. Not a food destination itself but well-served.",
+      "shopping": 3,
+      "shoppingNotes": "Village-scale shopping with good independents and a Waitrose. Brentwood (5 min) for broader high street needs.",
+      "character": 4,
+      "characterNotes": "Proper commuter village rather than a town — village green, period housing, a genuinely pleasant and cohesive community feel. One of the few Essex options that avoids the suburban sprawl character."
+    },
+    "recommendation": "Shenfield is the pick of the eastern arc for character — a genuine commuter village with green, period housing, and a community feel that stands apart from the suburban Essex towns nearby. The Elizabeth Line puts Liverpool Street in 35 minutes with extraordinary frequency. Thorndon Country Park’s 550 acres of ancient deer park is exceptional for Scarlet. Crime is well below national average.",
+    "pois": [
+      {
+        "name": "Shenfield Station",
+        "lat": 51.6255,
+        "lng": 0.3283,
+        "type": "transport",
+        "desc": "Elizabeth Line to Liverpool Street. 35 min, every 5 min peak."
+      },
+      {
+        "name": "Thorndon Country Park",
+        "lat": 51.6175,
+        "lng": 0.3439,
+        "type": "walk",
+        "desc": "550-acre ancient deer park and woodland — outstanding for dogs."
+      },
+      {
+        "name": "Shenfield Village Green",
+        "lat": 51.6262,
+        "lng": 0.3278,
+        "type": "walk",
+        "desc": "The village green and surrounding lanes — lovely for daily walks."
+      },
+      {
+        "name": "Ingatestone Village",
+        "lat": 51.6702,
+        "lng": 0.383,
+        "type": "eat",
+        "desc": "Neighbouring village with charming independent cafes and pubs."
+      },
+      {
+        "name": "Shenfield High Street",
+        "lat": 51.6258,
+        "lng": 0.329,
+        "type": "shop",
+        "desc": "Village-scale independents including Waitrose."
+      }
+    ]
+  },
+  {
+    "id": "maidenhead",
+    "name": "Maidenhead",
+    "county": "Berkshire",
+    "lat": 51.5218,
+    "lng": -0.7194,
+    "commute": {
+      "time": "25 min",
+      "timeMin": 25,
+      "terminal": "Paddington",
+      "line": "Elizabeth Line / GWR",
+      "freq": "Every 5–15 min peak"
+    },
+    "seasonTicket": {
+      "annual": 4900
+    },
+    "costs": {
+      "buyLow": 470000,
+      "buyHigh": 570000,
+      "rentLow": 1700,
+      "rentHigh": 2100
+    },
+    "lastTrain": {
+      "departs": "~00:30",
+      "arrives": "~00:55",
+      "note": "Elizabeth Line from Paddington. Very late last service — runs consistently past midnight on weekdays. Excellent flexibility for late London evenings."
+    },
+    "crime": {
+      "force": "Thames Valley Police",
+      "overallVsNational": -5,
+      "burglaryVsNational": -12,
+      "lgbtRisk": "similar",
+      "lgbtNote": "Thames Valley Police area — broadly at national average for LGBT hate crime. Maidenhead has a diverse, professional commuter population and is generally inclusive. Limited local LGBT+ scene but welcoming community. Windsor (10 min) has more visibility.",
+      "positives": [
+        "5% below national crime average",
+        "Burglary 12% below national",
+        "Well-resourced Thames Valley Police area"
+      ],
+      "concerns": [
+        "Town centre still improving — some dated retail units remain",
+        "Traffic can be challenging on the A4 corridor"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Outstanding — the Thames towpath through Maidenhead and up to Boulter’s Lock and Cookham is one of the finest river walks in the south-east. Cliveden (NT, 375 acres) just upstream. Exceptional for Scarlet.",
+      "dining": 4,
+      "diningNotes": "Good independent restaurants particularly around the High Street. The river-view options at Boulter’s Lock and the nearby villages (Bray has two Michelin-starred restaurants) are exceptional.",
+      "shopping": 3,
+      "shoppingNotes": "Town centre is undergoing regeneration — a mix of good independents and standard high street. Nicholsons shopping centre covers most needs.",
+      "character": 4,
+      "characterNotes": "Thames-side character is the defining feature — beautiful riverfront, boatyards, and the approach to Cookham and Cliveden. The town centre is functional but the riverside setting elevates it significantly."
+    },
+    "recommendation": "Maidenhead’s two headline features are a 25-minute Elizabeth Line to Paddington and the Thames. The towpath walk to Boulter’s Lock and beyond is genuinely beautiful for Scarlet, and Cliveden’s NT parkland is just upstream. Bray — the village with more Michelin stars per capita than anywhere in England — is 10 minutes away. Property is towards the top of your comfortable range but achievable.",
+    "pois": [
+      {
+        "name": "Maidenhead Station",
+        "lat": 51.5218,
+        "lng": -0.7197,
+        "type": "transport",
+        "desc": "Elizabeth Line to Paddington. 25 min, excellent frequency."
+      },
+      {
+        "name": "Boulter’s Lock & Thames",
+        "lat": 51.529,
+        "lng": -0.7108,
+        "type": "walk",
+        "desc": "The finest stretch of Thames towpath — beautiful all year, excellent for dogs."
+      },
+      {
+        "name": "Cliveden (NT)",
+        "lat": 51.5609,
+        "lng": -0.6979,
+        "type": "walk",
+        "desc": "375-acre National Trust estate overlooking the Thames. Outstanding dog walking."
+      },
+      {
+        "name": "Cookham & Bray",
+        "lat": 51.5565,
+        "lng": -0.7097,
+        "type": "eat",
+        "desc": "Beautiful neighbouring villages with excellent pubs. Bray has two Michelin-starred restaurants."
+      },
+      {
+        "name": "Maidenhead Town Centre",
+        "lat": 51.5218,
+        "lng": -0.7186,
+        "type": "shop",
+        "desc": "Nicholsons and High Street — improving independent and high street mix."
+      }
+    ]
+  },
+  {
+    "id": "wokingham",
+    "name": "Wokingham",
+    "county": "Berkshire",
+    "lat": 51.4108,
+    "lng": -0.8387,
+    "commute": {
+      "time": "40–45 min",
+      "timeMin": 43,
+      "terminal": "Paddington",
+      "line": "GWR to Reading, then Elizabeth Line",
+      "freq": "Every 15–20 min (change at Reading)"
+    },
+    "seasonTicket": {
+      "annual": 4700
+    },
+    "costs": {
+      "buyLow": 440000,
+      "buyHigh": 540000,
+      "rentLow": 1600,
+      "rentHigh": 1900
+    },
+    "lastTrain": {
+      "departs": "~23:15",
+      "arrives": "~00:15",
+      "note": "South Western direct from Waterloo is the better late-night option (~60 min but no change required). GWR via Reading is faster daily but last connecting service from Reading to Wokingham can be awkward after midnight. Worth having both options saved on National Rail."
+    },
+    "crime": {
+      "force": "Thames Valley Police",
+      "overallVsNational": -16,
+      "burglaryVsNational": -22,
+      "lgbtRisk": "lower",
+      "lgbtNote": "Thames Valley Police area — one of the safer Berkshire towns with crime well below national average. Wokingham has a stable, professional community and is broadly inclusive. Limited visible LGBT+ scene locally; Reading (12 min) has a strong active one.",
+      "positives": [
+        "16% below national crime average",
+        "Burglary 22% below national — very safe",
+        "One of the consistently safest towns in Berkshire"
+      ],
+      "concerns": [
+        "Commute requires a change at Reading for the fastest journey",
+        "Can feel quiet in the evenings"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Excellent — Dinton Pastures Country Park (200 acres with lakes and riverside trails) is outstanding for dogs. California Country Park nearby (woodland, heathland, lake). The Berkshire countryside around Wokingham is genuinely beautiful.",
+      "dining": 4,
+      "diningNotes": "Lovely independent food scene — the town centre has excellent restaurants, delis, and cafes concentrated around the Market Place and Denmark Street. One of the better independent high streets in Berkshire.",
+      "shopping": 4,
+      "shoppingNotes": "Charming independent high street centred on the Market Place with good variety. Proper characterful shopping rather than retail parks.",
+      "character": 5,
+      "characterNotes": "Genuinely one of the most liveable towns in Berkshire — medieval market town feel, half-timbered buildings around the centre, active community, weekly market. Consistently in the top rankings for quality of life in the south-east."
+    },
+    "recommendation": "Wokingham is Berkshire’s best-kept secret on this list: a medieval market town with outstanding character, 16% below national crime average, and excellent dog walking at Dinton Pastures. The commute (40–45 min via Reading to Paddington) requires a change but is reliable. If you’re looking at the western arc and want character over raw commute speed, this is the strongest option.",
+    "pois": [
+      {
+        "name": "Wokingham Station",
+        "lat": 51.4108,
+        "lng": -0.8387,
+        "type": "transport",
+        "desc": "GWR to Reading (15 min) then Elizabeth Line to Paddington. ~40–45 min total."
+      },
+      {
+        "name": "Dinton Pastures Country Park",
+        "lat": 51.4196,
+        "lng": -0.8853,
+        "type": "walk",
+        "desc": "200-acre country park with lakes and river trails — outstanding for dogs."
+      },
+      {
+        "name": "California Country Park",
+        "lat": 51.3877,
+        "lng": -0.8671,
+        "type": "walk",
+        "desc": "Heathland, woodland and lake — beautiful Berkshire countryside."
+      },
+      {
+        "name": "Wokingham Market Place",
+        "lat": 51.4112,
+        "lng": -0.835,
+        "type": "eat",
+        "desc": "Heart of the independent food scene — excellent restaurants and cafes."
+      },
+      {
+        "name": "Denmark Street",
+        "lat": 51.4115,
+        "lng": -0.8362,
+        "type": "shop",
+        "desc": "Characterful independent shopping street — medieval town centre."
+      }
+    ]
+  },
+  {
+    "id": "windsor",
+    "name": "Windsor",
+    "county": "Berkshire",
+    "lat": 51.4843,
+    "lng": -0.6079,
+    "commute": {
+      "time": "45–50 min",
+      "timeMin": 47,
+      "terminal": "Paddington",
+      "line": "GWR to Slough, then Elizabeth Line",
+      "freq": "Every 15–20 min (change at Slough)"
+    },
+    "seasonTicket": {
+      "annual": 5100
+    },
+    "costs": {
+      "buyLow": 600000,
+      "buyHigh": 800000,
+      "rentLow": 2000,
+      "rentHigh": 2500
+    },
+    "lastTrain": {
+      "departs": "~00:00",
+      "arrives": "~00:35",
+      "note": "Elizabeth Line from Paddington to Slough runs late, then GWR connection to Windsor & Eton Central. Last practical service around midnight from Paddington. Alternatively, Windsor & Eton Riverside via Waterloo/South Western (~60 min direct) runs to around 23:30 from Waterloo."
+    },
+    "crime": {
+      "force": "Thames Valley Police",
+      "overallVsNational": -14,
+      "burglaryVsNational": -20,
+      "lgbtRisk": "lower",
+      "lgbtNote": "One of the safer Thames Valley towns — significant police presence given the royal residence. Crime well below national average. Windsor has a broadly welcoming, cosmopolitan community given its international visitor base. Limited local LGBT+ scene but inclusive environment.",
+      "positives": [
+        "14% below national crime average",
+        "Burglary 20% below national",
+        "Significant police presence — one of the most policed towns in England"
+      ],
+      "concerns": [
+        "Property significantly over budget at current salary",
+        "Town can be very busy with tourists during peak season"
+      ],
+      "source": "CrimeRate.co.uk / police.uk to Nov 2025"
+    },
+    "lifestyle": {
+      "dogWalking": 5,
+      "dogWalkingNotes": "Windsor Great Park (4,800 acres) is one of the finest dog-walking spaces in England — the Long Walk, Virginia Water, Smith’s Lawn. Exceptional and unrivalled on this entire list for sheer scale and beauty.",
+      "dining": 4,
+      "diningNotes": "Good independent restaurant scene around Peascod Street and the riverside. The pubs and restaurants in Eton across the bridge are excellent. Better than you’d expect for a tourist town.",
+      "shopping": 4,
+      "shoppingNotes": "Royal Shopping Centre and Peascod Street — a mix of independents and premium high street. The Windsor boutique high street is charming.",
+      "character": 5,
+      "characterNotes": "Quite simply one of the most beautiful towns in England — the castle, the Long Walk, the Thames, Eton College across the bridge. The character and setting are unmatched anywhere on this list."
+    },
+    "recommendation": "Windsor is the aspirational entry on this list — 4,800 acres of Great Park for Scarlet, a castle on the doorstep, and one of the most beautiful town settings in England. Crime is well below average and the commute via Slough to Paddington (45–50 min) is workable. Property firmly in the £600–800k range places it in the future tier alongside Berkhamsted and St Albans — but arguably the most compelling future aspiration of any location here.",
+    "pois": [
+      {
+        "name": "Windsor & Eton Central Station",
+        "lat": 51.4843,
+        "lng": -0.6079,
+        "type": "transport",
+        "desc": "GWR to Slough then Elizabeth Line to Paddington. ~45–50 min."
+      },
+      {
+        "name": "Windsor Great Park",
+        "lat": 51.4619,
+        "lng": -0.6147,
+        "type": "walk",
+        "desc": "4,800 acres — the Long Walk, Virginia Water, deer. Unrivalled dog walking."
+      },
+      {
+        "name": "Windsor Castle",
+        "lat": 51.4839,
+        "lng": -0.6053,
+        "type": "culture",
+        "desc": "The castle and grounds — iconic and beautiful."
+      },
+      {
+        "name": "Eton High Street",
+        "lat": 51.4891,
+        "lng": -0.6077,
+        "type": "eat",
+        "desc": "Charming independent restaurants and pubs across the bridge in Eton."
+      },
+      {
+        "name": "Virginia Water Lake",
+        "lat": 51.4034,
+        "lng": -0.5645,
+        "type": "walk",
+        "desc": "5-mile lakeside walk in Windsor Great Park — beautiful in all seasons."
+      }
+    ]
+  }
+]

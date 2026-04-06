@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "CommuteFinder (Next.js)",
+      "runtimeExecutable": "bash",
+      "runtimeArgs": ["dev.sh"],
+      "port": 3000,
+      "cwd": "commuter-finder"
+    }
+  ]
+}
