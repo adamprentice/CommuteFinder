@@ -23,8 +23,13 @@ export const DEFAULT_STATE = {
   activeTab: 'overview',
   notes: {} as Record<string, string>,
   visits: {} as Record<string, { date: string; note: string }[]>,
+  personalRatings: {} as Record<string, { adam?: number; simon?: number }>,
   customLocations: [],
 };
+
+// Blend ratio when personal assessments are present.
+// 0.65 = objective score, 0.35 = personal average. Adjust to taste.
+export const PERSONAL_SCORE_WEIGHT = 0.35;
 
 export const TERMINALS = [
   { value: 'any', label: 'Any' },

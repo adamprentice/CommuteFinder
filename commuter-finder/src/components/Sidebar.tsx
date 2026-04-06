@@ -1,8 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { Location } from '@/lib/types';
-import { calculateScore, getScoreBadgeClass, getPipClass } from '@/lib/scoring';
+import { Location, PersonalRating } from '@/lib/types';
+import { calculateScore, getScoreBadgeClass, getPipClass, getCombinedScore, getPersonalScore } from '@/lib/scoring';
 
 interface SidebarProps {
   locations: Location[];
@@ -12,6 +12,7 @@ interface SidebarProps {
   deposit: number;
   terminal: string;
   isOpen: boolean;
+  personalRatings: Record<string, PersonalRating>;
   onSelect: (id: string) => void;
   onToggleCross: (id: string) => void;
   onAddClick: () => void;
@@ -25,32 +26,36 @@ export default function Sidebar({
   deposit,
   terminal,
   isOpen,
+  personalRatings,
   onSelect,
   onToggleCross,
   onAddClick,
 }: SidebarProps) {
   const [hoveredId, setHoveredId] = useState<string | null>(null);
 
-  const scored = locations.map((loc) => ({
-    loc,
-    score: calculateScore(loc, salary, deposit, terminal),
-    isCrossed: crossedOff.includes(loc.id),
-  }));
+  const scored = locations.map((loc) => {
+    const rating = personalRatings[loc.id] || {};
+    const score = calculateScore(loc, salary, deposit, terminal);
+    const combined = getCombinedScore(score.total, rating);
+    return { loc, score, combined, rating, isCrossed: crossedOff.includes(loc.id) };
+  });
 
   const active = scored
     .filter((s) => !s.isCrossed)
-    .sort((a, b) => b.score.total - a.score.total);
+    .sort((a, b) => b.combined - a.combined);
 
   const removed = scored
     .filter((s) => s.isCrossed)
-    .sort((a, b) => b.score.total - a.score.total);
+    .sort((a, b) => b.combined - a.combined);
 
   const renderCard = (item: (typeof scored)[0]) => {
-    const { loc, score, isCrossed } = item;
+    const { loc, score, combined, rating, isCrossed } = item;
     const pipClass = getPipClass(loc, salary, deposit, terminal, crossedOff);
-    const badgeClass = getScoreBadgeClass(score.total, isCrossed);
+    const badgeClass = getScoreBadgeClass(combined, isCrossed);
     const isSelected = selected === loc.id;
     const isHovered = hoveredId === loc.id;
+    const personalScore = getPersonalScore(rating);
+    const hasPersonal = personalScore !== null;
 
     return (
       <div
@@ -76,13 +81,7 @@ export default function Sidebar({
         {/* Status pip */}
         <span
           className={`pip ${pipClass}`}
-          style={{
-            width: '8px',
-            height: '8px',
-            borderRadius: '50%',
-            flexShrink: 0,
-            marginTop: '6px',
-          }}
+          style={{ width: '8px', height: '8px', borderRadius: '50%', flexShrink: 0, marginTop: '6px' }}
         />
 
         <div style={{ flex: 1, minWidth: 0 }}>
@@ -110,12 +109,30 @@ export default function Sidebar({
                 flexShrink: 0,
               }}
             >
-              {score.total}%
+              {combined}%
             </span>
           </div>
           <div style={{ fontSize: '0.72rem', opacity: 0.6, marginTop: '2px' }}>
             {loc.county} &middot; {loc.commute.time} &middot; {loc.commute.terminal}
           </div>
+          {/* Personal assessment indicator */}
+          {hasPersonal && (
+            <div style={{ display: 'flex', gap: '6px', marginTop: '4px', flexWrap: 'wrap' }}>
+              {rating.adam !== undefined && (
+                <span style={{ fontSize: '0.68rem', background: 'rgba(126,184,122,0.15)', color: '#7eb87a', padding: '1px 6px', borderRadius: '999px' }}>
+                  A {rating.adam}/10
+                </span>
+              )}
+              {rating.simon !== undefined && (
+                <span style={{ fontSize: '0.68rem', background: 'rgba(126,184,122,0.15)', color: '#7eb87a', padding: '1px 6px', borderRadius: '999px' }}>
+                  S {rating.simon}/10
+                </span>
+              )}
+              <span style={{ fontSize: '0.68rem', opacity: 0.45 }}>
+                obj {score.total}%
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Dismiss/Restore button on hover */}

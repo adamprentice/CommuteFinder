@@ -1,6 +1,6 @@
 'use client';
 
-import { Location, Visit } from '@/lib/types';
+import { Location, Visit, PersonalRating } from '@/lib/types';
 import { calculateScore, getHeaderScoreColor } from '@/lib/scoring';
 import OverviewPanel from './OverviewPanel';
 import MapPanel from './MapPanel';
@@ -16,11 +16,13 @@ interface DetailViewProps {
   activeTab: string;
   notes: string;
   visits: Visit[];
+  personalRating: PersonalRating;
   onToggleCross: (id: string) => void;
   onTabChange: (tab: string) => void;
   onSaveNotes: (locationId: string, notes: string) => void;
   onAddVisit: (locationId: string, visit: Visit) => void;
   onRemoveVisit: (locationId: string, index: number) => void;
+  onSaveRating: (locationId: string, rating: PersonalRating) => void;
 }
 
 const TABS = [
@@ -39,11 +41,13 @@ export default function DetailView({
   activeTab,
   notes,
   visits,
+  personalRating,
   onToggleCross,
   onTabChange,
   onSaveNotes,
   onAddVisit,
   onRemoveVisit,
+  onSaveRating,
 }: DetailViewProps) {
   const isCrossed = crossedOff.includes(location.id);
   const score = calculateScore(location, salary, deposit, terminal);
@@ -124,9 +128,11 @@ export default function DetailView({
               location={location}
               notes={notes}
               visits={visits}
+              personalRating={personalRating}
               onSaveNotes={(n) => onSaveNotes(location.id, n)}
               onAddVisit={(v) => onAddVisit(location.id, v)}
               onRemoveVisit={(i) => onRemoveVisit(location.id, i)}
+              onSaveRating={(r) => onSaveRating(location.id, r)}
             />
           </div>
         )}

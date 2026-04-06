@@ -74,6 +74,11 @@ export interface Visit {
   note: string;
 }
 
+export interface PersonalRating {
+  adam?: number;   // 1–10
+  simon?: number;  // 1–10
+}
+
 export interface AppState {
   selected: string;
   crossedOff: string[];
@@ -83,6 +88,7 @@ export interface AppState {
   activeTab: string;
   notes: Record<string, string>;
   visits: Record<string, Visit[]>;
+  personalRatings: Record<string, PersonalRating>;
   customLocations: Location[];
 }
 

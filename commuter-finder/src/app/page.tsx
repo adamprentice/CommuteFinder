@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect, useCallback } from 'react';
-import { Location, AppState, Visit } from '@/lib/types';
+import { Location, AppState, Visit, PersonalRating } from '@/lib/types';
 import { DEFAULT_STATE } from '@/lib/constants';
 import Header from '@/components/Header';
 import Sidebar from '@/components/Sidebar';
@@ -135,6 +135,18 @@ export default function Home() {
     setModalOpen(false);
   }, []);
 
+  const handleSaveRating = useCallback(async (locationId: string, rating: PersonalRating) => {
+    setState(prev => ({
+      ...prev,
+      personalRatings: { ...prev.personalRatings, [locationId]: rating },
+    }));
+    await fetch(`/api/locations/${locationId}/rating`, {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(rating),
+    });
+  }, []);
+
   const handleTabChange = useCallback((tab: string) => {
     setState(prev => ({ ...prev, activeTab: tab }));
   }, []);
@@ -175,6 +187,7 @@ export default function Home() {
           deposit={state.deposit}
           terminal={state.terminal}
           isOpen={sidebarOpen}
+          personalRatings={state.personalRatings || {}}
           onSelect={(id) => { handleSelect(id); setSidebarOpen(false); }}
           onToggleCross={handleToggleCross}
           onAddClick={() => { setModalOpen(true); setSidebarOpen(false); }}
@@ -190,11 +203,13 @@ export default function Home() {
               activeTab={state.activeTab}
               notes={state.notes[selectedLocation.id] || ''}
               visits={state.visits[selectedLocation.id] || []}
+              personalRating={state.personalRatings?.[selectedLocation.id] || {}}
               onToggleCross={handleToggleCross}
               onTabChange={handleTabChange}
               onSaveNotes={handleSaveNotes}
               onAddVisit={handleAddVisit}
               onRemoveVisit={handleRemoveVisit}
+              onSaveRating={handleSaveRating}
             />
           )}
         </main>

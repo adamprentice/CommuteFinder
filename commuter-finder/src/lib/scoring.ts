@@ -1,4 +1,5 @@
-import { Location, ScoreResult, Affordability } from './types';
+import { Location, ScoreResult, Affordability, PersonalRating } from './types';
+import { PERSONAL_SCORE_WEIGHT } from './constants';
 
 // Tweak these weights to change how locations are ranked.
 // They must sum to 100.
@@ -139,6 +140,23 @@ export function getPipClass(loc: Location, salary: number, deposit: number, term
   const tm = terminal === 'any' || loc.commute.terminal === terminal;
   if (!tm) return 'pip-slate';
   return aff === 'tight' ? 'pip-amber' : 'pip-green';
+}
+
+// Returns the average of all ratings provided (1–10 → scaled to 0–100),
+// or null if neither person has rated yet.
+export function getPersonalScore(rating: PersonalRating): number | null {
+  const scores = ([rating.adam, rating.simon] as (number | undefined)[])
+    .filter((s): s is number => s !== undefined);
+  if (scores.length === 0) return null;
+  return Math.round((scores.reduce((a, b) => a + b, 0) / scores.length) * 10);
+}
+
+// Blends objective score with personal score using PERSONAL_SCORE_WEIGHT.
+// Falls back to objective score when no personal rating exists.
+export function getCombinedScore(objectiveScore: number, rating: PersonalRating): number {
+  const personal = getPersonalScore(rating);
+  if (personal === null) return objectiveScore;
+  return Math.round(objectiveScore * (1 - PERSONAL_SCORE_WEIGHT) + personal * PERSONAL_SCORE_WEIGHT);
 }
 
 export function stars(n: number): string {

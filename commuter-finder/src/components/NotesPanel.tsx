@@ -1,29 +1,92 @@
 'use client';
 
 import { useState } from 'react';
-import { Location, Visit } from '@/lib/types';
+import { Location, Visit, PersonalRating } from '@/lib/types';
 
 interface NotesPanelProps {
   location: Location;
   notes: string;
   visits: Visit[];
+  personalRating: PersonalRating;
   onSaveNotes: (notes: string) => void;
   onAddVisit: (visit: Visit) => void;
   onRemoveVisit: (index: number) => void;
+  onSaveRating: (rating: PersonalRating) => void;
+}
+
+function RatingInput({
+  label,
+  value,
+  onChange,
+}: {
+  label: string;
+  value: number | undefined;
+  onChange: (v: number | undefined) => void;
+}) {
+  return (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '6px', flex: 1 }}>
+      <label style={{ fontSize: '0.75rem', fontWeight: 600, opacity: 0.7 }}>{label}</label>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+        <div style={{ display: 'flex', gap: '4px' }}>
+          {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((n) => (
+            <button
+              key={n}
+              onClick={() => onChange(value === n ? undefined : n)}
+              style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '6px',
+                border: '1px solid',
+                borderColor: value !== undefined && n <= value ? 'var(--green)' : 'var(--border)',
+                background: value !== undefined && n <= value ? 'var(--green)' : 'var(--bg)',
+                color: value !== undefined && n <= value ? '#fff' : 'var(--text-muted)',
+                fontSize: '0.75rem',
+                fontWeight: 600,
+                cursor: 'pointer',
+                transition: 'all 0.1s',
+                padding: 0,
+              }}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+        {value !== undefined && (
+          <span
+            style={{
+              fontFamily: "'Fraunces', serif",
+              fontWeight: 700,
+              fontSize: '1.1rem',
+              color: value >= 8 ? 'var(--green)' : value >= 5 ? 'var(--amber)' : 'var(--red)',
+              minWidth: '28px',
+            }}
+          >
+            {value}/10
+          </span>
+        )}
+      </div>
+    </div>
+  );
 }
 
 export default function NotesPanel({
   location,
   notes,
   visits,
+  personalRating,
   onSaveNotes,
   onAddVisit,
   onRemoveVisit,
+  onSaveRating,
 }: NotesPanelProps) {
   const [draft, setDraft] = useState(notes);
   const [visitDate, setVisitDate] = useState('');
   const [visitNote, setVisitNote] = useState('');
+  const [adamScore, setAdamScore] = useState<number | undefined>(personalRating.adam);
+  const [simonScore, setSimonScore] = useState<number | undefined>(personalRating.simon);
+
   const isDirty = draft !== notes;
+  const ratingDirty = adamScore !== personalRating.adam || simonScore !== personalRating.simon;
 
   const handleAddVisit = () => {
     if (!visitDate) return;
@@ -33,7 +96,49 @@ export default function NotesPanel({
   };
 
   return (
-    <div className="notes-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+    <div className="notes-panel" style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+
+      {/* Personal Assessment */}
+      <div className="assessment-section">
+        <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '1rem', fontWeight: 600, marginBottom: '0.25rem' }}>
+          Your Assessment
+        </h3>
+        <p style={{ fontSize: '0.8rem', color: 'var(--text-muted)', marginBottom: '1rem', lineHeight: 1.5 }}>
+          Rate {location.name} out of 10 after visiting. Both scores are averaged and blended with the
+          objective score to rerank the list.
+        </p>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <RatingInput
+            label="Adam"
+            value={adamScore}
+            onChange={setAdamScore}
+          />
+          <RatingInput
+            label="Simon"
+            value={simonScore}
+            onChange={setSimonScore}
+          />
+        </div>
+        <button
+          onClick={() => onSaveRating({ adam: adamScore, simon: simonScore })}
+          disabled={!ratingDirty}
+          style={{
+            marginTop: '0.75rem',
+            padding: '8px 20px',
+            borderRadius: '8px',
+            border: 'none',
+            background: ratingDirty ? 'var(--green)' : 'var(--border)',
+            color: ratingDirty ? '#fff' : 'var(--text-muted)',
+            fontWeight: 600,
+            fontSize: '0.85rem',
+            cursor: ratingDirty ? 'pointer' : 'default',
+            transition: 'all 0.15s',
+          }}
+        >
+          Save Assessment
+        </button>
+      </div>
+
       {/* Notes */}
       <div className="notes-section">
         <h3 style={{ fontFamily: "'Fraunces', serif", fontSize: '1rem', fontWeight: 600, marginBottom: '0.6rem' }}>
@@ -83,15 +188,7 @@ export default function NotesPanel({
           Visit Log
         </h3>
 
-        {/* Add Visit Form */}
-        <div
-          style={{
-            display: 'flex',
-            gap: '0.5rem',
-            alignItems: 'flex-end',
-            marginBottom: '0.75rem',
-          }}
-        >
+        <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'flex-end', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '3px' }}>
             <label style={{ fontSize: '0.72rem', opacity: 0.6 }}>Date</label>
             <input
@@ -108,7 +205,7 @@ export default function NotesPanel({
               }}
             />
           </div>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', flex: 1 }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3px', flex: 1, minWidth: '140px' }}>
             <label style={{ fontSize: '0.72rem', opacity: 0.6 }}>Note</label>
             <input
               type="text"
@@ -144,7 +241,6 @@ export default function NotesPanel({
           </button>
         </div>
 
-        {/* Visit List */}
         {visits.length === 0 ? (
           <div style={{ fontSize: '0.85rem', color: 'var(--text-muted)', opacity: 0.6, padding: '1rem 0' }}>
             No visits logged yet. Plan a trip to {location.name}!
@@ -154,7 +250,6 @@ export default function NotesPanel({
             {visits.map((visit, i) => (
               <div
                 key={i}
-                className="visit-entry"
                 style={{
                   display: 'flex',
                   alignItems: 'center',
@@ -169,9 +264,7 @@ export default function NotesPanel({
                 <span style={{ fontFamily: "'Fraunces', serif", fontWeight: 600, flexShrink: 0 }}>
                   {visit.date}
                 </span>
-                <span style={{ flex: 1, color: 'var(--text-muted)' }}>
-                  {visit.note || 'No notes'}
-                </span>
+                <span style={{ flex: 1, color: 'var(--text-muted)' }}>{visit.note || 'No notes'}</span>
                 <button
                   onClick={() => onRemoveVisit(i)}
                   style={{

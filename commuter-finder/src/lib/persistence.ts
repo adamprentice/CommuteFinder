@@ -1,6 +1,6 @@
 import fs from 'fs/promises';
 import path from 'path';
-import { Location, AppState, Visit } from './types';
+import { Location, AppState, Visit, PersonalRating } from './types';
 import { DEFAULT_STATE } from './constants';
 
 const DATA_DIR = path.join(process.cwd(), 'src', 'data');
@@ -74,4 +74,16 @@ export async function removeVisit(locationId: string, index: number): Promise<Vi
   state.visits = { ...state.visits, [locationId]: visits };
   await saveState(state);
   return visits;
+}
+
+export async function getPersonalRating(locationId: string): Promise<PersonalRating> {
+  const state = await getState();
+  return state.personalRatings?.[locationId] || {};
+}
+
+export async function savePersonalRating(locationId: string, rating: PersonalRating): Promise<PersonalRating> {
+  const state = await getState();
+  state.personalRatings = { ...(state.personalRatings || {}), [locationId]: rating };
+  await saveState(state);
+  return rating;
 }
